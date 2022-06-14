@@ -5,6 +5,8 @@ namespace ItsTreason\AptRepo\App;
 use DI\Bridge\Slim\Bridge;
 use DI\Container;
 use DI\ContainerBuilder;
+use ItsTreason\AptRepo\Api\Login\LoginActionController;
+use ItsTreason\AptRepo\Api\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\PackageDownload\PackageDownloadController;
 use ItsTreason\AptRepo\Api\Packages\PackagesController;
 use ItsTreason\AptRepo\Api\PublicKey\PublicKeyController;
@@ -16,6 +18,7 @@ use ItsTreason\AptRepo\Api\UploadPackage\UploadPackageFormController;
 use ItsTreason\AptRepo\App\Factory\PdoFactory;
 use ItsTreason\AptRepo\App\Factory\TwigFactory;
 use ItsTreason\AptRepo\App\Factory\UplinkFactory;
+use ItsTreason\AptRepo\App\Middleware\AuthMiddleware;
 use ItsTreason\AptRepo\App\Middleware\ErrorMiddleware;
 use PDO;
 use Slim\App;
@@ -41,9 +44,11 @@ class AppBuilder
 
     private function addAppRoutes(App $app): void
     {
-        // TODO: Auth middleware
-        $app->get('/ui/upload', UploadPackageFormController::class);
-        $app->post('/ui/upload', UploadPackageActionController::class);
+        $app->get('/ui/upload', UploadPackageFormController::class)->add(AuthMiddleware::class);
+        $app->post('/ui/upload', UploadPackageActionController::class)->add(AuthMiddleware::class);
+
+        $app->get('/ui/login', LoginFormController::class);
+        $app->post('/ui/login', LoginActionController::class);
 
         $app->get('/ui/pgp', PublicKeyController::class);
 
