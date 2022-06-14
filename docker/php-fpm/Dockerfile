@@ -11,20 +11,12 @@ RUN docker-php-ext-install -j$(nproc) pdo_mysql && \
 
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
-
+# Change so owner of the www-data home so it can create the .gnupg dir
 RUN chown www-data:www-data /var/www -R
 
-
-USER www-data
-
-COPY pgp-key.private /tmp/pgp-key.private
-
-RUN cat /tmp/pgp-key.private | gpg --import
-
-USER root
-
-RUN rm /tmp/pgp-key.private
-##
+COPY docker/php-fpm/importPgpKey.sh /opt/importPgpKey.sh
+RUN chmod +x /opt/importPgpKey.sh
+ENTRYPOINT [ "/opt/importPgpKey.sh" ]
 
 RUN mkdir /app
 WORKDIR /app

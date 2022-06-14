@@ -6,12 +6,12 @@ class GpgSignService
 {
     public function createReleaseGpg(string $releaseFile): string
     {
-        return shell_exec(sprintf('echo "%s" | gpg --default-key -abs', $releaseFile));
+        return shell_exec(sprintf('echo "%s" | gpg -abs', $releaseFile));
     }
 
     public function createInRelease(string $releaseFile): string
     {
-        return shell_exec(sprintf('echo "%s" | gpg --default-key -abs --clearsign', $releaseFile));
+        return shell_exec(sprintf('echo "%s" | gpg -abs --clearsign', $releaseFile));
     }
 
     public function getPublicKey(): string
