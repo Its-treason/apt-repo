@@ -15,6 +15,8 @@ use ItsTreason\AptRepo\Api\FileList\RootFileListController;
 use ItsTreason\AptRepo\Api\Login\LoginActionController;
 use ItsTreason\AptRepo\Api\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\PackageDownload\PackageDownloadController;
+use ItsTreason\AptRepo\Api\PackageList\PackageDetailController;
+use ItsTreason\AptRepo\Api\PackageList\PackageListController;
 use ItsTreason\AptRepo\Api\Packages\PackagesController;
 use ItsTreason\AptRepo\Api\PublicKey\PublicKeyController;
 use ItsTreason\AptRepo\Api\Release\InReleaseController;
@@ -59,6 +61,9 @@ class AppBuilder
 
         $app->get('/ui/login', LoginFormController::class);
         $app->post('/ui/login', LoginActionController::class);
+
+        $app->get('/ui/packages[/]', PackageListController::class);
+        $app->get('/ui/packages/{packageName}', PackageDetailController::class);
 
         $app->get('/ui/pgp', PublicKeyController::class);
 

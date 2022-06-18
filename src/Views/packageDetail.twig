@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Package - {{ packageName }}</title>
+</head>
+<body>
+<div>
+    <h1>Package: "{{ packageName }}"</h1>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Version</th>
+                <th>Arch</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for package in packages %}
+                <tr>
+                    <td>
+                        <a href="/{{ package.filename }}">
+                            {{ packageName }}_{{ package.version }}_{{ package.arch }}.deb
+                        </a>
+                    </td>
+                    <td>{{ package.version }}</td>
+                    <td>{{ package.arch }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<hr />
+<a href="/ui/packages">Back to package list</a>
+</body>
+</html>
