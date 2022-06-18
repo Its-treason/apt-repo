@@ -20,6 +20,7 @@ use ItsTreason\AptRepo\Api\PublicKey\PublicKeyController;
 use ItsTreason\AptRepo\Api\Release\InReleaseController;
 use ItsTreason\AptRepo\Api\Release\ReleaseController;
 use ItsTreason\AptRepo\Api\Release\ReleaseGpgController;
+use ItsTreason\AptRepo\Api\RepositoryInfo\RepositoryInfoController;
 use ItsTreason\AptRepo\Api\UploadPackage\UploadPackageActionController;
 use ItsTreason\AptRepo\Api\UploadPackage\UploadPackageFormController;
 use ItsTreason\AptRepo\App\Factory\PdoFactory;
@@ -51,6 +52,8 @@ class AppBuilder
 
     private function addAppRoutes(App $app): void
     {
+        $app->get('/ui[/]', RepositoryInfoController::class);
+
         $app->get('/ui/upload', UploadPackageFormController::class)->add(AuthMiddleware::class);
         $app->post('/ui/upload', UploadPackageActionController::class)->add(AuthMiddleware::class);
 

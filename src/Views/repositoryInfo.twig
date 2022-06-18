@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ repoName }} - Info</title>
+</head>
+<body>
+<div>
+    <h1>{{ repoName }}</h1>
+    <span>{{ repoDescription }}</span>
+</div>
+<br />
+<div>
+    <a href="/ui/packages/">List of all Packages</a>
+</div>
+<br />
+<div>
+    <span>You can add this repository using:</span>
+    <pre>  # curl -fsSL {{ host }}/ui/pgp | sudo apt-key add -</pre>
+    <pre>  # echo "deb {{ host }} stable main" >> /etc/apt/sources.list.d/{{ repoNameEscaped }}.list</pre>
+    <pre>  # apt update</pre>
+</div>
+</body>
+</html>
