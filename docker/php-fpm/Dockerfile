@@ -3,7 +3,7 @@ FROM composer:2.3.7 AS composer
 FROM php:8.1-fpm-buster AS base
 
 RUN apt update && \
-    apt install dpkg-dev libffi-dev gpg -y
+    apt install dpkg-dev libffi-dev gpg git zip unzip -y
 
 RUN docker-php-ext-install -j$(nproc) pdo_mysql && \
     docker-php-ext-install -j$(nproc) pdo && \

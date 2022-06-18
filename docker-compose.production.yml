@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  php-fpm:
+    build:
+      context: "."
+      dockerfile: "docker/php-fpm/Dockerfile"
+      target: "production"
+    restart: "always"
+    env_file: ".env"
+    volumes:
+      - "./pgp-key.private:/opt/pgp-key.private:ro"
+
+  nginx:
+    build:
+      context: "."
+      dockerfile: "docker/nginx/Dockerfile"
+      target: "production"
+    restart: "always"
+    ports:
+      - "3030:80"
+    depends_on:
+      - php-fpm
+
+  mariadb:
+    build:
+      context: "."
+      dockerfile: "docker/mariadb/Dockerfile"
+    restart: "always"
+    environment:
+      MARIADB_ROOT_PASSWORD: "1234"
+      MARIADB_DATABASE: "apt-repo-dev"
+    volumes:
+      - "./mariadb_data:/var/lib/mysql"
+
+  phpmyadmin:
+    image: phpmyadmin:5.1.1
+    ports:
+      - "8000:80"
+    restart: "always"
+    environment:
+      PMA_HOST: "mariadb"
+      PMA_PORT: 3306
