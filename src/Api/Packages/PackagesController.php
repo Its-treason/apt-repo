@@ -19,6 +19,7 @@ class PackagesController
         $route = $routeContext->getRoute();
 
         $arch = $route?->getArgument('arch');
+        // This is either 'Packages' or 'Packages.gz'
         $package = $route?->getArgument('package');
 
         $path = sprintf('main/%s/%s', $arch, $package);

@@ -5,6 +5,13 @@ namespace ItsTreason\AptRepo\App;
 use DI\Bridge\Slim\Bridge;
 use DI\Container;
 use DI\ContainerBuilder;
+use ItsTreason\AptRepo\Api\FileList\DistsArchFileListController;
+use ItsTreason\AptRepo\Api\FileList\DistsComponentFileListController;
+use ItsTreason\AptRepo\Api\FileList\DistsFileListController;
+use ItsTreason\AptRepo\Api\FileList\DistsSuiteFileListController;
+use ItsTreason\AptRepo\Api\FileList\PoolComponentFileListController;
+use ItsTreason\AptRepo\Api\FileList\PoolFileListController;
+use ItsTreason\AptRepo\Api\FileList\RootFileListController;
 use ItsTreason\AptRepo\Api\Login\LoginActionController;
 use ItsTreason\AptRepo\Api\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\PackageDownload\PackageDownloadController;
@@ -61,6 +68,14 @@ class AppBuilder
             '/dists/stable/main/{arch}/{package}',
             PackagesController::class,
         );
+
+        $app->get('/', RootFileListController::class);
+        $app->get('/dists[/]', DistsFileListController::class);
+        $app->get('/dists/stable[/]', DistsComponentFileListController::class);
+        $app->get('/dists/stable/main[/]', DistsSuiteFileListController::class);
+        $app->get('/dists/stable/main/{arch}[/]', DistsArchFileListController::class);
+        $app->get('/pool[/]', PoolComponentFileListController::class);
+        $app->get('/pool/main[/]', PoolFileListController::class);
     }
 
     private function createContainer(): Container

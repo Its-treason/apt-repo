@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Index of {{ path }}</title>
+</head>
+<body>
+<h1>Index of {{ path }}</h1>
+<hr />
+<table>
+    <tbody>
+        {% if showParentDir == true %}
+            <tr>
+                <td>
+                    <a href="../">../</a>
+                </td>
+            </tr>
+        {% endif %}
+        {% for file in files %}
+            <tr>
+                <td>
+                    <a href="{{ path }}{{ file.name }}">{{ file.name }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr />
+<a href="/ui">More info about this repository</a>
+</body>
+</html>
