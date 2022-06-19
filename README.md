@@ -19,3 +19,23 @@
 - Unittests
 - Documentation
 - Multiple suites / components
+
+## Tests
+
+### PHPUnit
+
+```
+docker-compose -f docker-compose.development.yml run --rm --entrypoint "php vendor/bin/phpunit" php-fpm
+```
+
+### PHPCS
+
+```
+docker-compose -f docker-compose.development.yml run --rm --entrypoint "php vendor/bin/phpcs" php-fpm
+```
+
+#### PHPCBF
+
+```
+docker-compose -f docker-compose.development.yml run --rm --entrypoint "php vendor/bin/phpcbf" php-fpm
+```
