@@ -5,6 +5,11 @@
       "ItsTreason\\AptRepo\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "ItsTreason\\AptRepo\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "its-treason",
@@ -22,7 +27,9 @@
     "ext-zlib": "*"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-latest"
+    "roave/security-advisories": "dev-latest",
+    "squizlabs/php_codesniffer": "^3.7",
+    "phpunit/phpunit": "^9.5"
   },
   "repositories": {
     "storj/uplink": {

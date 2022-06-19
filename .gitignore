@@ -4,3 +4,4 @@ mariadb_data
 .env
 *.private
 *.public
+.phpunit.result.cache
