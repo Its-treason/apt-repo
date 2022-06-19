@@ -15,7 +15,8 @@ class ReleaseFileService
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
         private readonly PackageMetadataRepository $packageMetadataRepository,
         private readonly Environment $twig,
-    ) {}
+    ) {
+    }
 
     public function createReleaseFile(): string
     {

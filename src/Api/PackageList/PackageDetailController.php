@@ -13,7 +13,8 @@ class PackageDetailController
     public function __construct(
         private Environment $twig,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

@@ -10,7 +10,8 @@ class PoolComponentFileListController
 {
     public function __construct(
         private readonly Environment $twig,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

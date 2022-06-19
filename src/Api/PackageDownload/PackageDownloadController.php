@@ -13,7 +13,8 @@ class PackageDownloadController
     public function __construct(
         private StorjFileService $storjFileService,
         private PackageMetadataRepository $packageMetadataRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         ServerRequestInterface $request,

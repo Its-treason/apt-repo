@@ -10,7 +10,8 @@ class StorjFileService
 {
     public function __construct(
         private Project $project,
-    ) {}
+    ) {
+    }
 
     public function uploadFile(Id $id, string $filepath): void
     {

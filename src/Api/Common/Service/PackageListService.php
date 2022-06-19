@@ -15,7 +15,8 @@ class PackageListService
         private readonly PackageMetadataRepository $packageMetadataRepository,
         private readonly PackageListsRepository $packageListsRepository,
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
-    ) {}
+    ) {
+    }
 
     public function updatePackageLists(): void
     {

@@ -20,7 +20,8 @@ class UploadPackageActionController
         private readonly StorjFileService $storjFileService,
         private readonly PackageMetadataRepository $packageMetadataRepository,
         private readonly PackageListService $packageListService,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

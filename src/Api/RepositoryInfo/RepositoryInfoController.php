@@ -12,7 +12,8 @@ class RepositoryInfoController
     public function __construct(
         private Environment $twig,
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

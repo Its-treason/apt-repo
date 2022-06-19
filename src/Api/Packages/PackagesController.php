@@ -11,7 +11,8 @@ class PackagesController
 {
     public function __construct(
         private readonly PackageListsRepository $packageListsRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

@@ -9,7 +9,8 @@ class PackageListsRepository
 {
     public function __construct(
         private readonly PDO $pdo,
-    ) {}
+    ) {
+    }
 
     public function updatePackageList(PackageList $packageList): void
     {

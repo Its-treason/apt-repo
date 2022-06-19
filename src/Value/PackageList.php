@@ -11,7 +11,8 @@ class PackageList
         private readonly string $md5sum,
         private readonly string $sha1,
         private readonly string $sha256,
-    ) {}
+    ) {
+    }
 
     public static function fromValues(
         string $path,

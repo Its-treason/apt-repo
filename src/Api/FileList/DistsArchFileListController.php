@@ -13,7 +13,8 @@ class DistsArchFileListController
     public function __construct(
         private readonly Environment $twig,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

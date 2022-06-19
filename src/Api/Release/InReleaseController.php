@@ -12,7 +12,8 @@ class InReleaseController
     public function __construct(
         private readonly ReleaseFileService $releaseFileService,
         private readonly GpgSignService $gpgSignService,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
