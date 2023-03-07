@@ -10,8 +10,7 @@ class PublicKeyController
 {
     public function __construct(
         private readonly GpgSignService $gpgSignService,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

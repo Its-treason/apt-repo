@@ -10,8 +10,7 @@ class ReleaseController
 {
     public function __construct(
         private readonly ReleaseFileService $releaseFileService,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

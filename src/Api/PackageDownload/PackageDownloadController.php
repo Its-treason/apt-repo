@@ -11,10 +11,9 @@ use Slim\Routing\RouteContext;
 class PackageDownloadController
 {
     public function __construct(
-        private StorjFileStorage          $storjFileService,
-        private PackageMetadataRepository $packageMetadataRepository,
-    ) {
-    }
+        private readonly StorjFileStorage          $storjFileService,
+        private readonly PackageMetadataRepository $packageMetadataRepository,
+    ) {}
 
     public function __invoke(
         ServerRequestInterface $request,

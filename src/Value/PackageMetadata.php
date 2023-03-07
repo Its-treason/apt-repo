@@ -14,8 +14,7 @@ class PackageMetadata
         private readonly string $filename,
         private readonly string $fullInfo,
         private readonly DateTime $uploadDate,
-    ) {
-    }
+    ) {}
 
     public static function fromValues(
         string $id,

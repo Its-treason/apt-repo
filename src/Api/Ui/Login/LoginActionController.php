@@ -1,10 +1,9 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\Ui;
+namespace ItsTreason\AptRepo\Api\Ui\Login;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use function ItsTreason\AptRepo\Api\Login\setcookie;
 
 class LoginActionController
 {

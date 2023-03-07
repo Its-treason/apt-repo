@@ -1,28 +1,26 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\FileList;
+namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 
-class RootFileListController
+class PoolComponentFileListController
 {
     public function __construct(
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $files = [
-            ['name' => 'dists/'],
-            ['name' => 'pool/'],
+            ['name' => 'main/'],
         ];
 
         $body = $this->twig->render('fileList.twig', [
-            'showParentDir' => false,
-            'path' => '/',
+            'showParentDir' => true,
+            'path' => '/pool/',
             'files' => $files,
         ]);
 

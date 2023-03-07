@@ -1,21 +1,20 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\Ui;
+namespace ItsTreason\AptRepo\Api\Ui\UploadPackage;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 
-class LoginFormController
+class UploadPackageFormController
 {
     public function __construct(
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $template = $this->twig->load('login.twig');
+        $template = $this->twig->load('uploadPackageForm.twig');
 
         $body = $template->render();
 

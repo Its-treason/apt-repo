@@ -22,7 +22,7 @@ class PackageMetadataRepository
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
-            'id' => $metadata->getId()->asString(),
+            'id' => $metadata->getId(),
             'name' => $metadata->getName(),
             'version' => $metadata->getVersion(),
             'arch' => $metadata->getArch(),
@@ -76,7 +76,6 @@ class PackageMetadataRepository
 
         return PackageMetadata::fromDbRow($row);
     }
-
 
     /**
      * @return PackageMetadata[]

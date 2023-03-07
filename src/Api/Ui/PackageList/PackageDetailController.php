@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\PackageList;
+namespace ItsTreason\AptRepo\Api\Ui\PackageList;
 
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -11,10 +11,9 @@ use Twig\Environment;
 class PackageDetailController
 {
     public function __construct(
-        private Environment $twig,
+        private readonly Environment               $twig,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

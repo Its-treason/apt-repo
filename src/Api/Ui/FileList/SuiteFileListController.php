@@ -1,39 +1,31 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\FileList;
+namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 
-class PoolFileListController
+class SuiteFileListController
 {
     public function __construct(
         private readonly Environment $twig,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $packages = $this->packageMetadataRepository->getAllPackages();
+        $arches = $this->packageMetadataRepository->getAllArches();
 
         $files = [];
-        foreach ($packages as $package) {
-            $files[] = [
-                'name' => sprintf(
-                    '%s_%s_%s.deb',
-                    $package->getName(),
-                    $package->getVersion(),
-                    $package->getArch(),
-                ),
-            ];
+        foreach ($arches as $arch) {
+            $files[] = ['name' => sprintf('binary-%s/', $arch)];
         }
 
         $body = $this->twig->render('fileList.twig', [
             'showParentDir' => true,
-            'path' => '/pool/main/',
+            'path' => '/dists/stable/main/',
             'files' => $files,
         ]);
 

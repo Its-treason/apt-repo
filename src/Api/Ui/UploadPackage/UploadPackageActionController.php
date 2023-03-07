@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\UploadPackage;
+namespace ItsTreason\AptRepo\Api\Ui\UploadPackage;
 
 use DateTime;
 use Exception;

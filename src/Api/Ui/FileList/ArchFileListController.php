@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\FileList;
+namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -8,13 +8,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
 use Twig\Environment;
 
-class DistsArchFileListController
+class ArchFileListController
 {
     public function __construct(
         private readonly Environment $twig,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

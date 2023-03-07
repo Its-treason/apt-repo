@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\RepositoryInfo;
+namespace ItsTreason\AptRepo\Api\Ui\RepositoryInfo;
 
 use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -10,10 +10,9 @@ use Twig\Environment;
 class RepositoryInfoController
 {
     public function __construct(
-        private Environment $twig,
+        private readonly Environment              $twig,
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {

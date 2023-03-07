@@ -1,17 +1,16 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\FileList;
+namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 
-class DistsComponentFileListController
+class ComponentFileListController
 {
     public function __construct(
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
