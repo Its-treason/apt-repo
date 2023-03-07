@@ -2,7 +2,7 @@
 
 namespace ItsTreason\AptRepo\Api\Packages;
 
-use ItsTreason\AptRepo\Api\Common\Repository\PackageListsRepository;
+use ItsTreason\AptRepo\Repository\PackageListsRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;

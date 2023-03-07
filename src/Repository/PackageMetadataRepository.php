@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\Common\Repository;
+namespace ItsTreason\AptRepo\Repository;
 
 use ItsTreason\AptRepo\Value\PackageMetadata;
 use PDO;
@@ -9,8 +9,7 @@ class PackageMetadataRepository
 {
     public function __construct(
         private readonly PDO $pdo,
-    ) {
-    }
+    ) {}
 
     public function insertPackageMetadata(PackageMetadata $metadata): void
     {

@@ -1,11 +1,10 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\Release\Service;
+namespace ItsTreason\AptRepo\Service;
 
-use DateTime;
-use ItsTreason\AptRepo\Api\Common\Repository\PackageListsRepository;
-use ItsTreason\AptRepo\Api\Common\Repository\PackageMetadataRepository;
-use ItsTreason\AptRepo\Api\Common\Repository\RepositoryInfoRepository;
+use ItsTreason\AptRepo\Repository\PackageListsRepository;
+use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
+use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
 use Twig\Environment;
 
 class ReleaseFileService
@@ -15,8 +14,7 @@ class ReleaseFileService
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
         private readonly PackageMetadataRepository $packageMetadataRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function createReleaseFile(): string
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\Common\Service;
+namespace ItsTreason\AptRepo\Service;
 
 use DateTime;
-use ItsTreason\AptRepo\Api\Common\Repository\PackageListsRepository;
-use ItsTreason\AptRepo\Api\Common\Repository\PackageMetadataRepository;
-use ItsTreason\AptRepo\Api\Common\Repository\RepositoryInfoRepository;
+use ItsTreason\AptRepo\Repository\PackageListsRepository;
+use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
+use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
 use ItsTreason\AptRepo\Value\PackageList;
 use ItsTreason\AptRepo\Value\PackageMetadata;
 
@@ -15,8 +15,7 @@ class PackageListService
         private readonly PackageMetadataRepository $packageMetadataRepository,
         private readonly PackageListsRepository $packageListsRepository,
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
-    ) {
-    }
+    ) {}
 
     public function updatePackageLists(): void
     {

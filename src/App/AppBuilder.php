@@ -12,8 +12,6 @@ use ItsTreason\AptRepo\Api\FileList\DistsSuiteFileListController;
 use ItsTreason\AptRepo\Api\FileList\PoolComponentFileListController;
 use ItsTreason\AptRepo\Api\FileList\PoolFileListController;
 use ItsTreason\AptRepo\Api\FileList\RootFileListController;
-use ItsTreason\AptRepo\Api\Login\LoginActionController;
-use ItsTreason\AptRepo\Api\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\PackageDownload\PackageDownloadController;
 use ItsTreason\AptRepo\Api\PackageList\PackageDetailController;
 use ItsTreason\AptRepo\Api\PackageList\PackageListController;
@@ -23,6 +21,8 @@ use ItsTreason\AptRepo\Api\Release\InReleaseController;
 use ItsTreason\AptRepo\Api\Release\ReleaseController;
 use ItsTreason\AptRepo\Api\Release\ReleaseGpgController;
 use ItsTreason\AptRepo\Api\RepositoryInfo\RepositoryInfoController;
+use ItsTreason\AptRepo\Api\Ui\LoginActionController;
+use ItsTreason\AptRepo\Api\Ui\LoginFormController;
 use ItsTreason\AptRepo\Api\UploadPackage\UploadPackageActionController;
 use ItsTreason\AptRepo\Api\UploadPackage\UploadPackageFormController;
 use ItsTreason\AptRepo\App\Factory\PdoFactory;
@@ -36,7 +36,6 @@ use PDO;
 use Slim\App;
 use Storj\Uplink\Project;
 use Twig\Environment;
-
 use function DI\factory;
 
 class AppBuilder

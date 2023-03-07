@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\Common\Repository;
+namespace ItsTreason\AptRepo\Repository;
 
 use PDO;
 
@@ -8,8 +8,7 @@ class RepositoryInfoRepository
 {
     public function __construct(
         private readonly PDO $pdo,
-    ) {
-    }
+    ) {}
 
     public function getValue(string $field): string|null
     {

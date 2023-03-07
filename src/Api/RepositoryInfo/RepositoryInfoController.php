@@ -2,7 +2,7 @@
 
 namespace ItsTreason\AptRepo\Api\RepositoryInfo;
 
-use ItsTreason\AptRepo\Api\Common\Repository\RepositoryInfoRepository;
+use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;

@@ -2,7 +2,7 @@
 
 namespace ItsTreason\AptRepo\Api\Release;
 
-use ItsTreason\AptRepo\Api\Release\Service\ReleaseFileService;
+use ItsTreason\AptRepo\Service\ReleaseFileService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

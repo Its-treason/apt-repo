@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\Api\Common\Service;
+namespace ItsTreason\AptRepo\Service;
 
 class GpgSignService
 {

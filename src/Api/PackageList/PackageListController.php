@@ -2,7 +2,7 @@
 
 namespace ItsTreason\AptRepo\Api\PackageList;
 
-use ItsTreason\AptRepo\Api\Common\Repository\PackageMetadataRepository;
+use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
