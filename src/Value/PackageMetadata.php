@@ -7,7 +7,7 @@ use DateTime;
 class PackageMetadata
 {
     private function __construct(
-        private readonly Id $id,
+        private readonly string $id,
         private readonly string $name,
         private readonly string $version,
         private readonly string $arch,
@@ -18,7 +18,7 @@ class PackageMetadata
     }
 
     public static function fromValues(
-        Id $id,
+        string $id,
         string $name,
         string $version,
         string $arch,
@@ -33,7 +33,7 @@ class PackageMetadata
         array $row
     ): static {
         return new self(
-            Id::fromString($row['package_id']),
+            $row['package_id'],
             $row['name'],
             $row['version'],
             $row['arch'],
@@ -43,7 +43,7 @@ class PackageMetadata
         );
     }
 
-    public function getId(): Id
+    public function getId(): string
     {
         return $this->id;
     }

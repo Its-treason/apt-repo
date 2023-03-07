@@ -3,7 +3,7 @@
 namespace ItsTreason\AptRepo\Api\PackageDownload;
 
 use ItsTreason\AptRepo\Api\Common\Repository\PackageMetadataRepository;
-use ItsTreason\AptRepo\Api\Common\Service\StorjFileService;
+use ItsTreason\AptRepo\FileStorage\StorjFileStorage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
@@ -11,7 +11,7 @@ use Slim\Routing\RouteContext;
 class PackageDownloadController
 {
     public function __construct(
-        private StorjFileService $storjFileService,
+        private StorjFileStorage          $storjFileService,
         private PackageMetadataRepository $packageMetadataRepository,
     ) {
     }

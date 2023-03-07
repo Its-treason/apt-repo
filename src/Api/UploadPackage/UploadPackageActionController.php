@@ -7,8 +7,7 @@ use Exception;
 use GuzzleHttp\Psr7\UploadedFile;
 use ItsTreason\AptRepo\Api\Common\Repository\PackageMetadataRepository;
 use ItsTreason\AptRepo\Api\Common\Service\PackageListService;
-use ItsTreason\AptRepo\Api\Common\Service\StorjFileService;
-use ItsTreason\AptRepo\Value\Id;
+use ItsTreason\AptRepo\FileStorage\FileStorageInterface;
 use ItsTreason\AptRepo\Value\PackageMetadata;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,11 +16,10 @@ use RuntimeException;
 class UploadPackageActionController
 {
     public function __construct(
-        private readonly StorjFileService $storjFileService,
+        private readonly FileStorageInterface      $fileStorage,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-        private readonly PackageListService $packageListService,
-    ) {
-    }
+        private readonly PackageListService        $packageListService,
+    ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
@@ -51,13 +49,13 @@ class UploadPackageActionController
 
     private function collectPackageMetadata(UploadedFile $file): PackageMetadata
     {
-        $id = Id::generate();
+        $id = bin2hex(random_bytes(16));
 
-        if (!mkdir($concurrentDirectory = sprintf('/tmp/%s', $id->asString())) && !is_dir($concurrentDirectory)) {
+        if (!mkdir($concurrentDirectory = sprintf('/tmp/%s', $id)) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
 
-        $tmpFilepath = sprintf('/tmp/%s/package.deb', $id->asString());
+        $tmpFilepath = sprintf('/tmp/%s/package.deb', $id);
         $file->moveTo($tmpFilepath);
 
         $fullInfo = shell_exec(sprintf('dpkg-scanpackages "%s"', $tmpFilepath));
@@ -99,7 +97,7 @@ class UploadPackageActionController
             $fullInfo,
         );
 
-        $this->storjFileService->uploadFile($id, $tmpFilepath);
+        $this->fileStorage->uploadFile($id, $tmpFilepath);
         unlink($tmpFilepath);
 
         $uploadDate = new DateTime();

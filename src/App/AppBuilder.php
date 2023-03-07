@@ -30,6 +30,8 @@ use ItsTreason\AptRepo\App\Factory\TwigFactory;
 use ItsTreason\AptRepo\App\Factory\UplinkFactory;
 use ItsTreason\AptRepo\App\Middleware\AuthMiddleware;
 use ItsTreason\AptRepo\App\Middleware\ErrorMiddleware;
+use ItsTreason\AptRepo\FileStorage\FileStorageFactory;
+use ItsTreason\AptRepo\FileStorage\FileStorageInterface;
 use PDO;
 use Slim\App;
 use Storj\Uplink\Project;
@@ -95,6 +97,7 @@ class AppBuilder
             PDO::class => factory(PdoFactory::class),
             Environment::class => factory(TwigFactory::class),
             Project::class => factory(UplinkFactory::class),
+            FileStorageInterface::class => factory(FileStorageFactory::class),
         ]);
 
         return $builder->build();
