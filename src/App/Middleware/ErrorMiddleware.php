@@ -9,17 +9,14 @@ class ErrorMiddleware implements ErrorRendererInterface
 {
     public function __invoke(Throwable $exception, bool $displayErrorDetails): string
     {
-        if ($exception->getMessage() === 'Not found.' && $exception->getCode() === 404) {
-            return '404 - Not Found';
-        }
-
         if (APP_ENV === 'production') {
-            return '500 - An internal Server Error Occurred';
+            return sprintf('%s - %s', $exception->getCode(), $exception->getMessage());
         }
 
         return <<<HTML
           <!DOCTYPE html>
-          <html lang="en"><body>{$this->formatException($exception)}</body></html>
+          <html lang="en">
+          <body>{$this->formatException($exception)}</body></html>
         HTML;
     }
 
