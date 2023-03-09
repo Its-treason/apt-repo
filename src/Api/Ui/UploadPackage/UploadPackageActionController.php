@@ -49,17 +49,18 @@ class UploadPackageActionController
 
     private function collectPackageMetadata(UploadedFile $file): PackageMetadata
     {
-        $id = bin2hex(random_bytes(16));
+        $tempId = bin2hex(random_bytes(16));
 
-        if (!mkdir($concurrentDirectory = sprintf('/tmp/%s', $id)) && !is_dir($concurrentDirectory)) {
+        if (!mkdir($concurrentDirectory = sprintf('/tmp/%s', $tempId)) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
 
-        $tmpFilepath = sprintf('/tmp/%s/package.deb', $id);
+        $tmpFilepath = sprintf('/tmp/%s/package.deb', $tempId);
         $file->moveTo($tmpFilepath);
 
         $fullInfo = shell_exec(sprintf('dpkg-scanpackages "%s"', $tmpFilepath));
 
+        // TODO: Create parser for this
         $name = null;
         $version = null;
         $arch = null;
@@ -97,11 +98,13 @@ class UploadPackageActionController
             $fullInfo,
         );
 
-        $this->fileStorage->uploadFile($id, $tmpFilepath);
+        $packageId = hash('md5', $name . $version . $arch);
+
+        $this->fileStorage->uploadFile($packageId, $tmpFilepath);
         unlink($tmpFilepath);
 
         $uploadDate = new DateTime();
 
-        return PackageMetadata::fromValues($id, $name, $version, $arch, $filename, $fullInfo, $uploadDate);
+        return PackageMetadata::fromValues($packageId, $name, $version, $arch, $filename, $fullInfo, $uploadDate);
     }
 }
