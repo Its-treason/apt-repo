@@ -20,6 +20,8 @@ class ArchFileListController
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
 
+        $codename = $route?->getArgument('codename');
+        $suite = $route?->getArgument('suite');
         $binaryArch = $route?->getArgument('arch');
 
         $archExists = $this->checkArchExists($binaryArch);

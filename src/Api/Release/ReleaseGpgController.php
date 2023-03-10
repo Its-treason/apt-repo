@@ -6,6 +6,7 @@ use ItsTreason\AptRepo\Service\GpgSignService;
 use ItsTreason\AptRepo\Service\ReleaseFileService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Routing\RouteContext;
 
 class ReleaseGpgController
 {
@@ -16,6 +17,11 @@ class ReleaseGpgController
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+
+        $codename = $route?->getArgument('codename');
+
         $release = $this->releaseFileService->createReleaseFile();
 
         $gpg = $this->gpgSignService->createReleaseGpg($release);

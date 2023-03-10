@@ -5,6 +5,7 @@ namespace ItsTreason\AptRepo\Api\Release;
 use ItsTreason\AptRepo\Service\ReleaseFileService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Routing\RouteContext;
 
 class ReleaseController
 {
@@ -14,6 +15,11 @@ class ReleaseController
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+
+        $codename = $route?->getArgument('codename');
+
         $release = $this->releaseFileService->createReleaseFile();
 
         $response->getBody()->write($release);

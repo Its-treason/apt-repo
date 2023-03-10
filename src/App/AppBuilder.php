@@ -71,19 +71,19 @@ class AppBuilder
 
         $app->get('/pool/main/{filename}', PackageDownloadController::class);
 
-        $app->get('/dists/stable/Release', ReleaseController::class);
-        $app->get('/dists/stable/InRelease', InReleaseController::class);
-        $app->get('/dists/stable/Release.gpg', ReleaseGpgController::class);
+        $app->get('/dists/{codename}/Release', ReleaseController::class);
+        $app->get('/dists/{codename}/InRelease', InReleaseController::class);
+        $app->get('/dists/{codename}/Release.gpg', ReleaseGpgController::class);
         $app->get(
-            '/dists/stable/main/{arch}/{package}',
+            '/dists/{codename}/{suite}/{arch}/{package}',
             PackagesController::class,
         );
 
         $app->get('/', RootFileListController::class);
         $app->get('/dists[/]', DistsFileListController::class);
-        $app->get('/dists/stable[/]', ComponentFileListController::class);
-        $app->get('/dists/stable/main[/]', SuiteFileListController::class);
-        $app->get('/dists/stable/main/{arch}[/]', ArchFileListController::class);
+        $app->get('/dists/{codename}[/]', ComponentFileListController::class);
+        $app->get('/dists/{codename}/{suite}[/]', SuiteFileListController::class);
+        $app->get('/dists/{codename}/{suite}/{arch}[/]', ArchFileListController::class);
         $app->get('/pool[/]', PoolComponentFileListController::class);
         $app->get('/pool/main[/]', PoolFileListController::class);
     }

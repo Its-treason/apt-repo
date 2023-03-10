@@ -4,6 +4,7 @@ namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Routing\RouteContext;
 use Twig\Environment;
 
 class ComponentFileListController
@@ -14,6 +15,11 @@ class ComponentFileListController
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+
+        $codename = $route?->getArgument('codename');
+
         $files = [
             ['name' => 'Release'],
             ['name' => 'Release.gpg'],
