@@ -18,7 +18,6 @@ class UploadPackageActionController
     public function __construct(
         private readonly FileStorageInterface      $fileStorage,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-        private readonly PackageListService        $packageListService,
     ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -41,7 +40,6 @@ class UploadPackageActionController
         }
 
         $this->packageMetadataRepository->insertPackageMetadata($metadata);
-        $this->packageListService->updatePackageLists();
 
         return $response->withStatus(302)
             ->withHeader('Location', '/ui/upload?success=true');

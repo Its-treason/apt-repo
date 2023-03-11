@@ -3,6 +3,7 @@
 namespace ItsTreason\AptRepo\Repository;
 
 use ItsTreason\AptRepo\Value\PackageList;
+use ItsTreason\AptRepo\Value\Suite;
 use PDO;
 
 class PackageListsRepository
@@ -15,9 +16,9 @@ class PackageListsRepository
     {
         $sql = <<<SQL
             INSERT INTO `package_lists`
-                (`path`, `content`, `size`, `md5sum`, `sha1`, `sha256`)
+                (`arch`, `type`, `codename`, `suite`, `content`, `size`, `md5sum`, `sha1`, `sha256`)
             VALUES 
-                (:path, :content, :size, :md5sum, :sha1, :sha256)
+                (:arch, :type: :codename, :suite, :path, :content, :size, :md5sum, :sha1, :sha256)
             ON DUPLICATE KEY UPDATE
                 content = :content,
                 size = :size,
@@ -28,7 +29,10 @@ class PackageListsRepository
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
-            'path' => $packageList->getPath(),
+            'arch' => $packageList->getArch(),
+            'type' => $packageList->getType(),
+            'codename' => $packageList->getCodename(),
+            'suite' => $packageList->getSuite(),
             'content' => $packageList->getContent(),
             'size' => $packageList->getSize(),
             'md5sum' => $packageList->getMd5sum(),
@@ -37,15 +41,23 @@ class PackageListsRepository
         ]);
     }
 
-    public function getPackageList(string $path): PackageList|null
+    public function getPackageList(string $arch, string $type, Suite $suite): PackageList|null
     {
         $sql = <<<SQL
-            SELECT * FROM `package_lists` WHERE path = :path
+            SELECT * FROM `package_lists` 
+            WHERE
+                arch = :arch AND
+                type = :type AND
+                codename = :codename AND
+                suite = :suite
         SQL;
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
-            'path' => $path,
+            'arch' => $arch,
+            'type' => $type,
+            'codename' => $suite->getCodename(),
+            'suite' => $suite->getSuite(),
         ]);
 
         $row = $statement->fetch(PDO::FETCH_ASSOC);
@@ -59,14 +71,17 @@ class PackageListsRepository
     /**
      * @return PackageList[]
      */
-    public function getAllPackageLists(): array
+    public function getAllPackageListsForSuites(Suite $suite): array
     {
         $sql = <<<SQL
-            SELECT * FROM `package_lists`
+            SELECT * FROM `package_lists` WHERE codename = :codename AND suite = :suite
         SQL;
 
         $statement = $this->pdo->prepare($sql);
-        $statement->execute();
+        $statement->execute([
+            'codename' => $suite->getCodename(),
+            'suite' => $suite->getSuite(),
+        ]);
 
         $packageLists = [];
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {

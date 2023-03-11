@@ -5,30 +5,38 @@ namespace ItsTreason\AptRepo\Value;
 class PackageList
 {
     private function __construct(
-        private readonly string $path,
+        private readonly string $arch,
+        private readonly string $type,
+        private readonly string $codename,
+        private readonly string $suite,
         private readonly string $content,
         private readonly int    $size,
         private readonly string $md5sum,
         private readonly string $sha1,
         private readonly string $sha256,
-    ) {
-    }
+    ) {}
 
     public static function fromValues(
-        string $path,
+        string $arch,
+        string $type,
+        string $codename,
+        string $suite,
         string $content,
         int $size,
         string $md5sum,
         string $sha1,
         string $sha256,
     ): static {
-        return new self($path, $content, $size, $md5sum, $sha1, $sha256);
+        return new self($arch, $type, $codename, $suite, $content, $size, $md5sum, $sha1, $sha256);
     }
 
     public static function fromDbRow(array $row): static
     {
         return new self(
-            $row['path'],
+            $row['arch'],
+            $row['type'],
+            $row['codename'],
+            $row['suite'],
             $row['content'],
             (int)$row['size'],
             $row['md5sum'],
@@ -37,9 +45,24 @@ class PackageList
         );
     }
 
-    public function getPath(): string
+    public function getArch(): string
     {
-        return $this->path;
+        return $this->arch;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getCodename(): string
+    {
+        return $this->codename;
+    }
+
+    public function getSuite(): string
+    {
+        return $this->suite;
     }
 
     public function getContent(): string

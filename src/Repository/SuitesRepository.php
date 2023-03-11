@@ -31,6 +31,27 @@ class SuitesRepository
         return $suites;
     }
 
+    /**
+     * @return Suite[]
+     */
+    public function getAllForCodename(string $codename): array
+    {
+        $sql = <<<SQL
+            SELECT * FROM suites WHERE codename = :codename
+        SQL;
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(['codename' => $statement]);
+
+        /** @var Suite[] $suites */
+        $suites = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $suites[] = Suite::fromValues($row['codename'], $row['suite']);
+        }
+
+        return $suites;
+    }
+
     public function create(Suite $suite): void
     {
         $sql = <<<SQL

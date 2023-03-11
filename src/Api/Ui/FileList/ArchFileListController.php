@@ -3,6 +3,7 @@
 namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
+use ItsTreason\AptRepo\Value\Suite;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
@@ -24,7 +25,9 @@ class ArchFileListController
         $suite = $route?->getArgument('suite');
         $binaryArch = $route?->getArgument('arch');
 
-        $archExists = $this->checkArchExists($binaryArch);
+        $suite = Suite::fromValues($codename, $suite);
+
+        $archExists = $this->checkArchExists($binaryArch, $suite);
         if (!$archExists) {
             return $response->withStatus(404);
         }
@@ -45,7 +48,7 @@ class ArchFileListController
         return $response->withStatus(200);
     }
 
-    private function checkArchExists(string $binaryArch = ''): bool
+    private function checkArchExists(string $binaryArch, Suite $suite): bool
     {
         // remove the 'binary-' prefix
         $prefix = 'binary-';
@@ -53,7 +56,7 @@ class ArchFileListController
             $binaryArch = substr($binaryArch, strlen($prefix));
         }
 
-        $arches = $this->packageMetadataRepository->getAllArches();
+        $arches = $this->packageMetadataRepository->getAllArches($suite);
 
         return in_array($binaryArch, $arches);
     }

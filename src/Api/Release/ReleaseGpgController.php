@@ -22,7 +22,7 @@ class ReleaseGpgController
 
         $codename = $route?->getArgument('codename');
 
-        $release = $this->releaseFileService->createReleaseFile();
+        $release = $this->releaseFileService->createReleaseFile($codename);
 
         $gpg = $this->gpgSignService->createReleaseGpg($release);
 

@@ -3,6 +3,7 @@
 namespace ItsTreason\AptRepo\Api\Packages;
 
 use ItsTreason\AptRepo\Repository\PackageListsRepository;
+use ItsTreason\AptRepo\Value\Suite;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
@@ -18,13 +19,15 @@ class PackagesController
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
 
+        $codename = $route?->getArgument('arch');
+        $suite = $route?->getArgument('arch');
         $arch = $route?->getArgument('arch');
         // This is either 'Packages' or 'Packages.gz'
-        $package = $route?->getArgument('package');
+        $type = $route?->getArgument('package');
 
-        $path = sprintf('main/%s/%s', $arch, $package);
+        $suite = Suite::fromValues($codename, $suite);
 
-        $packageList = $this->packageListsRepository->getPackageList($path);
+        $packageList = $this->packageListsRepository->getPackageList($arch, $type, $suite);
         if ($packageList === null) {
             return $response->withStatus(404);
         }

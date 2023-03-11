@@ -5,46 +5,52 @@ namespace ItsTreason\AptRepo\Service;
 use ItsTreason\AptRepo\Repository\PackageListsRepository;
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
+use ItsTreason\AptRepo\Repository\SuitesRepository;
 use Twig\Environment;
 
 class ReleaseFileService
 {
     public function __construct(
-        private readonly PackageListsRepository $packageListsRepository,
-        private readonly RepositoryInfoRepository $repositoryInfoRepository,
+        private readonly PackageListsRepository    $packageListsRepository,
+        private readonly RepositoryInfoRepository  $repositoryInfoRepository,
         private readonly PackageMetadataRepository $packageMetadataRepository,
-        private readonly Environment $twig,
+        private readonly SuitesRepository          $suitesRepository,
+        private readonly Environment               $twig,
     ) {}
 
-    public function createReleaseFile(): string
+    public function createReleaseFile(string $codename): string
     {
-        $packageLists = $this->packageListsRepository->getAllPackageLists();
+        $suites = $this->suitesRepository->getAllForCodename($codename);
 
         $md5Sum = '';
         $sha1 = '';
         $sha256 = '';
-        foreach ($packageLists as $packageList) {
-            $md5Sum .= sprintf(
-                ' %s %s %s%s',
-                $packageList->getMd5sum(),
-                $packageList->getSize(),
-                $packageList->getPath(),
-                PHP_EOL,
-            );
-            $sha1 .= sprintf(
-                ' %s %s %s%s',
-                $packageList->getSha1(),
-                $packageList->getSize(),
-                $packageList->getPath(),
-                PHP_EOL,
-            );
-            $sha256 .= sprintf(
-                ' %s %s %s%s',
-                $packageList->getSha256(),
-                $packageList->getSize(),
-                $packageList->getPath(),
-                PHP_EOL,
-            );
+
+        foreach ($suites as $suite) {
+            $packageLists = $this->packageListsRepository->getAllPackageListsForSuites($suite);
+            foreach ($packageLists as $packageList) {
+                $md5Sum .= sprintf(
+                    ' %s %s %s%s',
+                    $packageList->getMd5sum(),
+                    $packageList->getSize(),
+                    $packageList->getPath(),
+                    PHP_EOL,
+                );
+                $sha1 .= sprintf(
+                    ' %s %s %s%s',
+                    $packageList->getSha1(),
+                    $packageList->getSize(),
+                    $packageList->getPath(),
+                    PHP_EOL,
+                );
+                $sha256 .= sprintf(
+                    ' %s %s %s%s',
+                    $packageList->getSha256(),
+                    $packageList->getSize(),
+                    $packageList->getPath(),
+                    PHP_EOL,
+                );
+            }
         }
 
         $md5Sum = rtrim($md5Sum);

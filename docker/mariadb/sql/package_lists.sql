@@ -1,5 +1,8 @@
 CREATE TABLE `package_lists` (
-  `path` varchar(64) NOT NULL,
+  `arch` varchar(64) NOT NULL,
+  `type` varchar(64) NOT NULL,
+  `suite` varchar(64) NOT NULL,
+  `codename` varchar(64) NOT NULL,
   `content` blob NOT NULL,
   `size` int(11) NOT NULL,
   `md5sum` char(32) NOT NULL,
@@ -8,5 +11,5 @@ CREATE TABLE `package_lists` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE `package_lists`
-  ADD PRIMARY KEY (`path`);
+  ADD PRIMARY KEY (arch, type, suite, codename);
 COMMIT;

@@ -22,7 +22,7 @@ class InReleaseController
 
         $codename = $route?->getArgument('codename');
 
-        $release = $this->releaseFileService->createReleaseFile();
+        $release = $this->releaseFileService->createReleaseFile($codename);
 
         $inRelease = $this->gpgSignService->createInRelease($release);
 

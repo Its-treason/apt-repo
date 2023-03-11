@@ -3,6 +3,7 @@
 namespace ItsTreason\AptRepo\Repository;
 
 use ItsTreason\AptRepo\Value\PackageMetadata;
+use ItsTreason\AptRepo\Value\Suite;
 use PDO;
 
 class PackageMetadataRepository
@@ -40,6 +41,31 @@ class PackageMetadataRepository
         $sql = <<<SQL
             SELECT *, MAX(`upload_date`)
             FROM `package_metadata`
+            GROUP BY name
+            ORDER BY name 
+        SQL;
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+
+        $packages = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $packages[] = PackageMetadata::fromDbRow($row);
+        }
+
+        return $packages;
+    }
+
+    /**
+     * @return PackageMetadata[]
+     */
+    public function getAllPackagesForSuite(Suite $suite): array
+    {
+        $sql = <<<SQL
+            SELECT *, MAX(`upload_date`)
+            FROM `package_metadata`
+            INNER JOIN suite_packages USING (package_id)
+            WHERE codename = :codename AND suite = :suite
             GROUP BY name
             ORDER BY name 
         SQL;
@@ -105,14 +131,20 @@ class PackageMetadataRepository
     /**
      * @return string[]
      */
-    public function getAllArches(): array
+    public function getAllArches(Suite $suite): array
     {
         $sql = <<<SQL
-            SELECT arch FROM `package_metadata` GROUP BY arch
+            SELECT `package_metadata`.arch FROM `package_metadata`
+            INNER JOIN suite_packages USING (package_id)
+            WHERE codename = :codename AND suite = :suite
+            GROUP BY `package_metadata`.arch
         SQL;
 
         $statement = $this->pdo->prepare($sql);
-        $statement->execute();
+        $statement->execute([
+            'codename' => $suite->getCodename(),
+            'suite' => $suite->getSuite(),
+        ]);
 
         $arches = [];
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {

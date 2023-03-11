@@ -3,6 +3,7 @@
 namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
+use ItsTreason\AptRepo\Value\Suite;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
@@ -23,7 +24,9 @@ class SuiteFileListController
         $codename = $route?->getArgument('codename');
         $suite = $route?->getArgument('suite');
 
-        $arches = $this->packageMetadataRepository->getAllArches();
+        $suite = Suite::fromValues($codename, $suite);
+
+        $arches = $this->packageMetadataRepository->getAllArches($suite);
 
         $files = [];
         foreach ($arches as $arch) {

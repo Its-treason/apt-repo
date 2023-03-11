@@ -2,6 +2,7 @@
 
 namespace ItsTreason\AptRepo\Api\Ui\FileList;
 
+use ItsTreason\AptRepo\Repository\SuitesRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
@@ -11,6 +12,7 @@ class ComponentFileListController
 {
     public function __construct(
         private readonly Environment $twig,
+        private readonly SuitesRepository $suitesRepository,
     ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -20,12 +22,16 @@ class ComponentFileListController
 
         $codename = $route?->getArgument('codename');
 
+        $suites = $this->suitesRepository->getAllForCodename($codename);
+
         $files = [
             ['name' => 'Release'],
             ['name' => 'Release.gpg'],
             ['name' => 'InRelease'],
-            ['name' => 'main/'],
         ];
+        foreach ($suites as $suite) {
+            $files[] = ['name' => $suite->getSuite() . '/'];
+        }
 
         $body = $this->twig->render('fileList.twig', [
             'showParentDir' => true,

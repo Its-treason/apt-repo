@@ -8,6 +8,7 @@ use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
 use ItsTreason\AptRepo\Value\PackageList;
 use ItsTreason\AptRepo\Value\PackageMetadata;
+use ItsTreason\AptRepo\Value\Suite;
 
 class PackageListService
 {
@@ -17,9 +18,9 @@ class PackageListService
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
     ) {}
 
-    public function updatePackageLists(): void
+    public function updatePackageLists(Suite $suite): void
     {
-        $allPackages = $this->packageMetadataRepository->getAllPackages();
+        $allPackages = $this->packageMetadataRepository->getAllPackagesForSuite($suite);
 
         $groupedPackages = [];
         foreach ($allPackages as $package) {
@@ -27,7 +28,7 @@ class PackageListService
         }
 
         foreach ($groupedPackages as $arch => $packages) {
-            $this->createPackageList($packages, $arch);
+            $this->createPackageList($packages, $arch, $suite);
         }
 
         $this->repositoryInfoRepository->setValue(
@@ -41,7 +42,7 @@ class PackageListService
      * @param string $arch
      * @return void
      */
-    private function createPackageList(array $packages, string $arch): void
+    private function createPackageList(array $packages, string $arch, Suite $suite): void
     {
         $rawContent = '';
         foreach ($packages as $package) {

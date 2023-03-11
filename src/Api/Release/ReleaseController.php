@@ -20,7 +20,7 @@ class ReleaseController
 
         $codename = $route?->getArgument('codename');
 
-        $release = $this->releaseFileService->createReleaseFile();
+        $release = $this->releaseFileService->createReleaseFile($codename);
 
         $response->getBody()->write($release);
         return $response->withHeader('Content-Type', 'text/plain')->withStatus(200);
