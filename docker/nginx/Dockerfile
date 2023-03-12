@@ -1,4 +1,4 @@
-FROM nginx:1.22.0-alpine AS base
+FROM nginx:1.23.0-alpine AS base
 
 RUN mkdir /app
 

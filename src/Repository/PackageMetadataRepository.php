@@ -93,7 +93,7 @@ class PackageMetadataRepository
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
-           'fileName' => sprintf('pool/main/%s', $filename),
+           'fileName' => $filename,
         ]);
 
         $row = $statement->fetch(PDO::FETCH_ASSOC);

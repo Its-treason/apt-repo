@@ -10,7 +10,7 @@ services:
     env_file: ".env"
     volumes:
       - ".:/app"
-      - "./package_data:/opt/data"
+      - "./package_data:/opt/data:rw"
       - "./pgp-key.private:/opt/pgp-key.private:ro"
 
   nginx:

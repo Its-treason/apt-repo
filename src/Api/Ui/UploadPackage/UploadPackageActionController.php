@@ -34,7 +34,9 @@ class UploadPackageActionController
 
         try {
             $metadata = $this->collectPackageMetadata($file);
-        } catch (Exception) {
+        } catch (Exception $exception) {
+            var_dump($exception);
+
             return $response->withStatus(302)
                 ->withHeader('Location', '/ui/upload?error=An error occurred');
         }
@@ -88,7 +90,7 @@ class UploadPackageActionController
             throw new RuntimeException('Metadata missing');
         }
 
-        $filename = sprintf('pool/main/%s_%s_%s.deb', $name, $version, $arch);
+        $filename = sprintf('%s_%s_%s.deb', $name, $version, $arch);
 
         $fullInfo = str_replace(
             $tmpFilepath,

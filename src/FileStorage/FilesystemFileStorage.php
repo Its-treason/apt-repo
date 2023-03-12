@@ -4,6 +4,7 @@ namespace ItsTreason\AptRepo\FileStorage;
 
 use GuzzleHttp\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 
 class FilesystemFileStorage implements FileStorageInterface
 {
@@ -12,7 +13,12 @@ class FilesystemFileStorage implements FileStorageInterface
     public function uploadFile(string $id, string $filepath): void
     {
         $storageLocation = getenv('STORAGE_LOCATION');
-        copy($filepath, sprintf('%s/%s.deb', $storageLocation, $id));
+        $target = sprintf('%s/%s.deb', $storageLocation, $id);
+        $success = copy($filepath, $target);
+
+        if (!$success) {
+            throw new RuntimeException(sprintf('Could not copy deb file from "%s" to "%s"', $filepath, $target));
+        }
     }
 
     public function downloadFile(string $id): StreamInterface
