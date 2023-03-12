@@ -14,6 +14,7 @@ class DistsFileListController
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        // TODO: Fetch all Codenames
         $files = [
             ['name' => 'stable/'],
         ];

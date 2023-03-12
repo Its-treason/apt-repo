@@ -35,7 +35,7 @@ class SuiteFileListController
 
         $body = $this->twig->render('fileList.twig', [
             'showParentDir' => true,
-            'path' => '/dists/stable/main/',
+            'path' => sprintf('/dists/%s/%s/', $codename, $suite),
             'files' => $files,
         ]);
 

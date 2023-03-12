@@ -35,7 +35,7 @@ class ComponentFileListController
 
         $body = $this->twig->render('fileList.twig', [
             'showParentDir' => true,
-            'path' => '/dists/stable/',
+            'path' => sprintf('/dists/%s/', $codename),
             'files' => $files,
         ]);
 

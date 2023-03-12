@@ -39,10 +39,9 @@ class PackageMetadataRepository
     public function getAllPackages(): array
     {
         $sql = <<<SQL
-            SELECT *, MAX(`upload_date`)
+            SELECT *
             FROM `package_metadata`
             GROUP BY name
-            ORDER BY name 
         SQL;
 
         $statement = $this->pdo->prepare($sql);
@@ -71,7 +70,10 @@ class PackageMetadataRepository
         SQL;
 
         $statement = $this->pdo->prepare($sql);
-        $statement->execute();
+        $statement->execute([
+            'codename' => $suite->getCodename(),
+            'suite' => $suite->getSuite(),
+        ]);
 
         $packages = [];
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {

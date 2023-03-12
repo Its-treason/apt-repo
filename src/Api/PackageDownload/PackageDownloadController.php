@@ -2,7 +2,7 @@
 
 namespace ItsTreason\AptRepo\Api\PackageDownload;
 
-use ItsTreason\AptRepo\FileStorage\StorjFileStorage;
+use ItsTreason\AptRepo\FileStorage\FileStorageInterface;
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -11,7 +11,7 @@ use Slim\Routing\RouteContext;
 class PackageDownloadController
 {
     public function __construct(
-        private readonly StorjFileStorage          $storjFileService,
+        private readonly FileStorageInterface      $fileStorage,
         private readonly PackageMetadataRepository $packageMetadataRepository,
     ) {}
 
@@ -32,7 +32,7 @@ class PackageDownloadController
             return $response->withStatus(404);
         }
 
-        $downloadStream = $this->storjFileService->downloadFile($packageMetadata->getId());
+        $downloadStream = $this->fileStorage->downloadFile($packageMetadata->getId());
 
         return $response->withBody($downloadStream)
             ->withHeader('Content-Type', 'application/vnd.debian.binary-package')
