@@ -23,6 +23,8 @@ use ItsTreason\AptRepo\Api\Ui\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageDetailController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageListController;
 use ItsTreason\AptRepo\Api\Ui\RepositoryInfo\RepositoryInfoController;
+use ItsTreason\AptRepo\Api\Ui\Suites\CreateSuiteController;
+use ItsTreason\AptRepo\Api\Ui\Suites\SuiteListController;
 use ItsTreason\AptRepo\Api\Ui\UploadPackage\UploadPackageActionController;
 use ItsTreason\AptRepo\Api\Ui\UploadPackage\UploadPackageFormController;
 use ItsTreason\AptRepo\App\Factory\PdoFactory;
@@ -60,6 +62,10 @@ class AppBuilder
 
         $app->get('/ui/upload', UploadPackageFormController::class)->add(AuthMiddleware::class);
         $app->post('/ui/upload', UploadPackageActionController::class)->add(AuthMiddleware::class);
+
+        $app->get('/ui/suites', SuiteListController::class)->add(AuthMiddleware::class);
+        $app->post('/ui/suites/create', CreateSuiteController::class)->add(AuthMiddleware::class);
+        $app->delete('/ui/suites/create', CreateSuiteController::class)->add(AuthMiddleware::class);
 
         $app->get('/ui/login', LoginFormController::class);
         $app->post('/ui/login', LoginActionController::class);

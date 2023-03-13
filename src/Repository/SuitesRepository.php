@@ -2,6 +2,7 @@
 
 namespace ItsTreason\AptRepo\Repository;
 
+use ItsTreason\AptRepo\Api\Ui\Suites\SuiteListController;
 use ItsTreason\AptRepo\Value\Suite;
 use PDO;
 
@@ -32,6 +33,26 @@ class SuitesRepository
     }
 
     /**
+     * @return string[]
+     */
+    public function getAllCodenames(): array
+    {
+        $sql = <<<SQL
+            SELECT codename FROM suites GROUP BY codename
+        SQL;
+
+        $query = $this->pdo->query($sql);
+
+        /** @var string[] $codenames */
+        $codenames = [];
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $codenames[] = $row['codename'];
+        }
+
+        return $codenames;
+    }
+
+    /**
      * @return Suite[]
      */
     public function getAllForCodename(string $codename): array
@@ -41,7 +62,7 @@ class SuitesRepository
         SQL;
 
         $statement = $this->pdo->prepare($sql);
-        $statement->execute(['codename' => $statement]);
+        $statement->execute(['codename' => $codename]);
 
         /** @var Suite[] $suites */
         $suites = [];
@@ -56,6 +77,19 @@ class SuitesRepository
     {
         $sql = <<<SQL
             INSERT INTO suites (codename, suite) VALUES (:codename, :suite)
+        SQL;
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'codename' => $suite->getCodename(),
+            'suite' => $suite->getSuite(),
+        ]);
+    }
+
+    public function delete(Suite $suite): void
+    {
+        $sql = <<<SQL
+            DELETE FROM suites WHERE codename = :codename AND suite = :suite
         SQL;
 
         $statement = $this->pdo->prepare($sql);
