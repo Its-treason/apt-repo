@@ -53,9 +53,10 @@ class PackageListService
         $rawSha1 = hash('sha1', $rawContent);
         $rawSha256 = hash('sha256', $rawContent);
         $rawSize = mb_strlen($rawContent, '8bit');
-        $rawPath = sprintf('main/binary-%s/Packages', $arch);
 
-        $rawPackageList = PackageList::fromValues($rawPath, $rawContent, $rawSize, $rawMd3sum, $rawSha1, $rawSha256);
+        $rawPackageList = PackageList::fromValues(
+            $arch, 'Packages', $suite->getCodename(), $suite->getSuite(), $rawContent, $rawSize, $rawMd3sum, $rawSha1, $rawSha256
+        );
         $this->packageListsRepository->updatePackageList($rawPackageList);
 
         $gzContent = gzencode($rawContent, 9);
@@ -64,9 +65,10 @@ class PackageListService
         $gzSha1 = hash('sha1', $gzContent);
         $gzSha256 = hash('sha256', $gzContent);
         $gzSize = mb_strlen($gzContent, '8bit');
-        $gzPath = sprintf('main/binary-%s/Packages.gz', $arch);
 
-        $gzPackageList = PackageList::fromValues($gzPath, $gzContent, $gzSize, $gzMd3sum, $gzSha1, $gzSha256);
+        $gzPackageList = PackageList::fromValues(
+            $arch, 'Packages.gz', $suite->getCodename(), $suite->getSuite(), $gzContent, $gzSize, $gzMd3sum, $gzSha1, $gzSha256,
+        );
         $this->packageListsRepository->updatePackageList($gzPackageList);
     }
 }

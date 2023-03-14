@@ -39,7 +39,7 @@ class ArchFileListController
 
         $body = $this->twig->render('fileList.twig', [
             'showParentDir' => true,
-            'path' => sprintf('/dists/%s/%s/%s/', $codename, $suite, $binaryArch),
+            'path' => sprintf('/dists/%s/%s/%s/', $suite->getCodename(), $suite->getSuite(), $binaryArch),
             'files' => $files,
         ]);
 

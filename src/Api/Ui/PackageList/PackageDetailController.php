@@ -3,6 +3,9 @@
 namespace ItsTreason\AptRepo\Api\Ui\PackageList;
 
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
+use ItsTreason\AptRepo\Repository\SuitePackagesRepository;
+use ItsTreason\AptRepo\Repository\SuitesRepository;
+use ItsTreason\AptRepo\Value\Suite;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
@@ -12,6 +15,8 @@ class PackageDetailController
 {
     public function __construct(
         private readonly Environment               $twig,
+        private readonly SuitePackagesRepository   $suitePackagesRepository,
+        private readonly SuitesRepository          $suitesRepository,
         private readonly PackageMetadataRepository $packageMetadataRepository,
     ) {}
 
@@ -22,24 +27,27 @@ class PackageDetailController
 
         $packageName = $route?->getArgument('packageName');
 
-        $packagesMetadata = $this->packageMetadataRepository->getAllPackageVersionsByPackageName($packageName);
-
-        if (count($packagesMetadata) === 0) {
+        $packageMetadata = $this->packageMetadataRepository->getPackageByFilename($packageName);
+        if ($packageMetadata === null) {
             return $response->withStatus(404);
         }
 
-        $packages = [];
-        foreach ($packagesMetadata as $packageMetadata) {
-            $packages[] = [
-                'arch' => $packageMetadata->getArch(),
-                'filename' => $packageMetadata->getFilename(),
-                'version' => $packageMetadata->getVersion(),
-            ];
+        $currentSuites = $this->suitePackagesRepository->getAllPackagesForPackage($packageMetadata);
+
+        $allSuites = $this->suitesRepository->getAll();
+
+        /** @var Suite[] $availableSuites */
+        $availableSuites = [];
+        foreach ($allSuites as $suite) {
+            if (!in_array($suite, $currentSuites)) {
+                $availableSuites[] = $suite;
+            }
         }
 
         $body = $this->twig->render('packageDetail.twig', [
-            'packages' => $packages,
-            'packageName' => $packageName,
+            'package' => $packageMetadata,
+            'currentSuites' => $currentSuites,
+            'availableSuites' => $availableSuites,
         ]);
 
         $response->getBody()->write($body);

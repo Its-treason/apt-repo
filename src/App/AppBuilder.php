@@ -22,6 +22,7 @@ use ItsTreason\AptRepo\Api\Ui\Login\LoginActionController;
 use ItsTreason\AptRepo\Api\Ui\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageDetailController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageListController;
+use ItsTreason\AptRepo\Api\Ui\PackageList\PackageSuiteAddController;
 use ItsTreason\AptRepo\Api\Ui\RepositoryInfo\RepositoryInfoController;
 use ItsTreason\AptRepo\Api\Ui\Suites\CreateSuiteController;
 use ItsTreason\AptRepo\Api\Ui\Suites\SuiteListController;
@@ -72,10 +73,9 @@ class AppBuilder
 
         $app->get('/ui/packages[/]', PackageListController::class);
         $app->get('/ui/packages/{packageName}', PackageDetailController::class);
+        $app->post('/ui/packages/{packageName}/suites', PackageSuiteAddController::class);
 
         $app->get('/ui/pgp', PublicKeyController::class);
-
-        $app->get('/pool/main/{filename}', PackageDownloadController::class);
 
         $app->get('/dists/{codename}/Release', ReleaseController::class);
         $app->get('/dists/{codename}/InRelease', InReleaseController::class);
@@ -92,6 +92,7 @@ class AppBuilder
         $app->get('/dists/{codename}/{suite}/{arch}[/]', ArchFileListController::class);
         $app->get('/pool[/]', PoolComponentFileListController::class);
         $app->get('/pool/main[/]', PoolFileListController::class);
+        $app->get('/pool/main/{filename}', PackageDownloadController::class);
     }
 
     private function createContainer(): Container

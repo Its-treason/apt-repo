@@ -20,7 +20,7 @@ class PackageListController
 
         $packages = [];
         foreach ($packagesMetadata as $packageMetadata) {
-            $packages[] = $packageMetadata->getName();
+            $packages[] = $packageMetadata->getFilename();
         }
 
         $body = $this->twig->render('packageList.twig', [

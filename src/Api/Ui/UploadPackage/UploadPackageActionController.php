@@ -44,7 +44,7 @@ class UploadPackageActionController
         $this->packageMetadataRepository->insertPackageMetadata($metadata);
 
         return $response->withStatus(302)
-            ->withHeader('Location', '/ui/upload?success=true');
+            ->withHeader('Location', '/ui/packages/' . $metadata->getFilename());
     }
 
     private function collectPackageMetadata(UploadedFile $file): PackageMetadata

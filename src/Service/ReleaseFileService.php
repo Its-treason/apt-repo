@@ -33,21 +33,21 @@ class ReleaseFileService
                     ' %s %s %s%s',
                     $packageList->getMd5sum(),
                     $packageList->getSize(),
-                    $packageList->getPath(),
+                    $packageList->buildPath(),
                     PHP_EOL,
                 );
                 $sha1 .= sprintf(
                     ' %s %s %s%s',
                     $packageList->getSha1(),
                     $packageList->getSize(),
-                    $packageList->getPath(),
+                    $packageList->buildPath(),
                     PHP_EOL,
                 );
                 $sha256 .= sprintf(
                     ' %s %s %s%s',
                     $packageList->getSha256(),
                     $packageList->getSize(),
-                    $packageList->getPath(),
+                    $packageList->buildPath(),
                     PHP_EOL,
                 );
             }
@@ -57,7 +57,7 @@ class ReleaseFileService
         $sha1 = rtrim($sha1);
         $sha256 = rtrim($sha256);
 
-        $arches = $this->packageMetadataRepository->getAllArches();
+        $arches = $this->packageMetadataRepository->getAllArchesForCodename($codename);
         $arches = implode(' ', $arches);
 
         $origin = $this->repositoryInfoRepository->getValue('Origin');

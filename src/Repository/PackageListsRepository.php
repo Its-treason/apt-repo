@@ -18,7 +18,7 @@ class PackageListsRepository
             INSERT INTO `package_lists`
                 (`arch`, `type`, `codename`, `suite`, `content`, `size`, `md5sum`, `sha1`, `sha256`)
             VALUES 
-                (:arch, :type: :codename, :suite, :content, :size, :md5sum, :sha1, :sha256)
+                (:arch, :type, :codename, :suite, :content, :size, :md5sum, :sha1, :sha256)
             ON DUPLICATE KEY UPDATE
                 content = :content,
                 size = :size,

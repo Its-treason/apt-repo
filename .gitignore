@@ -1,6 +1,7 @@
 .idea
 /vendor
 mariadb_data
+package_data
 .env
 *.private
 *.public

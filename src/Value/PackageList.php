@@ -6,7 +6,7 @@ class PackageList
 {
     private function __construct(
         private readonly string $arch,
-        private readonly string $type,
+        private readonly string $type, // 'Packages' or 'Packages.gz'
         private readonly string $codename,
         private readonly string $suite,
         private readonly string $content,
@@ -88,5 +88,10 @@ class PackageList
     public function getSha256(): string
     {
         return $this->sha256;
+    }
+
+    public function buildPath(): string
+    {
+        return sprintf('%s/binary-%s/%s', $this->suite, $this->arch, $this->type);
     }
 }

@@ -41,7 +41,6 @@ class PackageMetadataRepository
         $sql = <<<SQL
             SELECT *
             FROM `package_metadata`
-            GROUP BY name
         SQL;
 
         $statement = $this->pdo->prepare($sql);
@@ -86,7 +85,7 @@ class PackageMetadataRepository
     public function getPackageByFilename(string $filename): PackageMetadata|null
     {
         $sql = <<<SQL
-            SELECT *, MAX(`upload_date`) FROM `package_metadata`
+            SELECT * FROM `package_metadata`
             WHERE 
                 filename = :fileName
         SQL;
@@ -146,6 +145,31 @@ class PackageMetadataRepository
         $statement->execute([
             'codename' => $suite->getCodename(),
             'suite' => $suite->getSuite(),
+        ]);
+
+        $arches = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $arches[] = $row['arch'];
+        }
+
+        return $arches;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllArchesForCodename(string $codename): array
+    {
+        $sql = <<<SQL
+            SELECT `package_metadata`.arch FROM `package_metadata`
+            INNER JOIN suite_packages USING (package_id)
+            WHERE codename = :codename
+            GROUP BY `package_metadata`.arch
+        SQL;
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'codename' => $codename,
         ]);
 
         $arches = [];

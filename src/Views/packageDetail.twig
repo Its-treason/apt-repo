@@ -1,37 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Package - {{ packageName }}</title>
+    <title>Package - {{ package.filename }}</title>
 </head>
 <body>
-<div>
-    <h1>Package: "{{ packageName }}"</h1>
-</div>
-<div>
+<header>
+    <h1>Package: "{{ package.filename }}"</h1>
+</header>
+<main>
     <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Version</th>
-                <th>Arch</th>
-            </tr>
-        </thead>
         <tbody>
-            {% for package in packages %}
-                <tr>
-                    <td>
-                        <a href="/{{ package.filename }}">
-                            {{ packageName }}_{{ package.version }}_{{ package.arch }}.deb
-                        </a>
-                    </td>
-                    <td>{{ package.version }}</td>
-                    <td>{{ package.arch }}</td>
-                </tr>
-            {% endfor %}
+        <tr>
+            <td>Name</td>
+            <td>{{ package.name }}</td>
+        </tr>
+        <tr>
+            <td>Version</td>
+            <td>{{ package.version }}</td>
+        </tr>
+        <tr>
+            <td>Arch</td>
+            <td>{{ package.arch }}</td>
+        </tr>
+        <tr>
+            <td>Internal Id</td>
+            <td>{{ package.id }}</td>
+        </tr>
+        <tr>
+            <td>Upload date</td>
+            <td>{{ package.uploadDate|date('Y-m-d H:i:s') }}</td>
+        </tr>
         </tbody>
     </table>
-</div>
-<hr />
-<a href="/ui/packages">Back to package list</a>
+    <hr/>
+    <h3>Add suite</h3>
+    {% if availableSuites %}
+        <form method="post" action="/ui/packages/{{ package.filename }}/suites" enctype="multipart/form-data">
+            <label>
+                Select suite
+                <select name="suite">
+                    {% for suite in availableSuites %}
+                        <option value="{{ suite.codename }}-{{ suite.suite }}">{{ suite.codename }}
+                            - {{ suite.suite }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <input type="submit" value="Add"/>
+        </form>
+    {% else %}
+        <i>No suites available</i>
+    {% endif %}
+    <h3>All suite</h3>
+    {% if not currentSuites %}
+        <i>Packages in no suites</i>
+    {% endif %}
+    <ul>
+        {% for suite in currentSuites %}
+            <li>{{ suite.codename }} - {{ suite.suite }}</li>
+        {% endfor %}
+    </ul>
+</main>
+<footer>
+    <hr/>
+    <a href="/ui/packages">Back to package list</a>
+</footer>
 </body>
 </html>
