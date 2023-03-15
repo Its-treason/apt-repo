@@ -92,9 +92,10 @@ class UploadPackageActionController
 
         $filename = sprintf('%s_%s_%s.deb', $name, $version, $arch);
 
+        // Replace the Filepath to the correct when, used in the Packages file
         $fullInfo = str_replace(
             $tmpFilepath,
-            $filename,
+            'pool/main/' . $filename,
             $fullInfo,
         );
 

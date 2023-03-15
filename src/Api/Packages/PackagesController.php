@@ -19,13 +19,15 @@ class PackagesController
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
 
-        $codename = $route?->getArgument('arch');
-        $suite = $route?->getArgument('arch');
+        $codename = $route?->getArgument('codename');
+        $suite = $route?->getArgument('suite');
         $arch = $route?->getArgument('arch');
         // This is either 'Packages' or 'Packages.gz'
         $type = $route?->getArgument('package');
 
         $suite = Suite::fromValues($codename, $suite);
+        // Remove the binary- Prefix
+        $arch = str_replace('binary-', '', $arch);
 
         $packageList = $this->packageListsRepository->getPackageList($arch, $type, $suite);
         if ($packageList === null) {
