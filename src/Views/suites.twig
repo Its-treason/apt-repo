@@ -8,20 +8,22 @@
     <h1>Suites</h1>
 </header>
 <main>
-    <h2>Create suite</h2>
-    <form action="/ui/suites/create" method="post" enctype="multipart/form-data">
-        <label>
-            Codename:
-            <input name="codename" type="text" autocomplete="on" pattern="[A-Za-z]{1,32}" />
-        </label>
-        <label>
-            Suite:
-            <input name="suite" type="text" autocomplete="on" pattern="[A-Za-z]{1,32}" />
-        </label>
-        <button type="submit">Create</button>
-    </form>
-    <hr />
-    <h2>Existing suites</h2>
+    {% if loggedIn %}
+        <h2>Create suite</h2>
+        <form action="/ui/suites/create" method="post" enctype="multipart/form-data">
+            <label>
+                Codename:
+                <input name="codename" type="text" autocomplete="on" pattern="[A-Za-z]{1,32}" />
+            </label>
+            <label>
+                Suite:
+                <input name="suite" type="text" autocomplete="on" pattern="[A-Za-z]{1,32}" />
+            </label>
+            <button type="submit">Create</button>
+        </form>
+        <hr />
+    {% endif %}
+    <h2>All suites</h2>
     <ul>
     {% for suite in suites %}
         <li>{{ suite.codename }} - {{ suite.suite }}</li>

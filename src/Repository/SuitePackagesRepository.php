@@ -78,4 +78,21 @@ class SuitePackagesRepository
             'packageId' => $package->getId(),
         ]);
     }
+
+    public function removePackageFromSuite(PackageMetadata $package, Suite $suite): void
+    {
+        $sql = <<<SQL
+            DELETE FROM `suite_packages`
+            WHERE codename = :codename AND
+                  suite = :suite AND
+                  package_id = :packageId
+        SQL;
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'codename' => $suite->getCodename(),
+            'suite' => $suite->getSuite(),
+            'packageId' => $package->getId(),
+        ]);
+    }
 }

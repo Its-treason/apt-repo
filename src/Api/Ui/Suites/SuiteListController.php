@@ -18,8 +18,11 @@ class SuiteListController
     {
         $suites = $this->suitesRepository->getAll();
 
+        $loggedIn = isset($request->getCookieParams()['apiKey']);
+
         $body = $this->twig->render('suites.twig', [
             'suites' => $suites,
+            'loggedId' => $loggedIn,
         ]);
 
         $response->getBody()->write($body);

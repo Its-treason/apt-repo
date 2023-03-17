@@ -23,6 +23,7 @@ use ItsTreason\AptRepo\Api\Ui\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageDetailController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageListController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageSuiteAddController;
+use ItsTreason\AptRepo\Api\Ui\PackageList\PackageSuiteRemoveController;
 use ItsTreason\AptRepo\Api\Ui\RepositoryInfo\RepositoryInfoController;
 use ItsTreason\AptRepo\Api\Ui\Suites\CreateSuiteController;
 use ItsTreason\AptRepo\Api\Ui\Suites\SuiteListController;
@@ -64,7 +65,7 @@ class AppBuilder
         $app->get('/ui/upload', UploadPackageFormController::class)->add(AuthMiddleware::class);
         $app->post('/ui/upload', UploadPackageActionController::class)->add(AuthMiddleware::class);
 
-        $app->get('/ui/suites', SuiteListController::class)->add(AuthMiddleware::class);
+        $app->get('/ui/suites', SuiteListController::class);
         $app->post('/ui/suites/create', CreateSuiteController::class)->add(AuthMiddleware::class);
         $app->delete('/ui/suites/create', CreateSuiteController::class)->add(AuthMiddleware::class);
 
@@ -73,7 +74,8 @@ class AppBuilder
 
         $app->get('/ui/packages[/]', PackageListController::class);
         $app->get('/ui/packages/{packageName}', PackageDetailController::class);
-        $app->post('/ui/packages/{packageName}/suites', PackageSuiteAddController::class);
+        $app->post('/ui/packages/{packageName}/addSuite', PackageSuiteAddController::class)->add(AuthMiddleware::class);
+        $app->post('/ui/packages/{packageName}/removeSuite', PackageSuiteRemoveController::class)->add(AuthMiddleware::class);
 
         $app->get('/ui/pgp', PublicKeyController::class);
 

@@ -1,0 +1,11 @@
+<hr/>
+<h3>All suites</h3>
+{% if not currentSuites %}
+    <i>Packages in no suites</i>
+{% else %}
+    <ul>
+        {% for suite in currentSuites %}
+            <li>{{ suite.codename }} - {{ suite.suite }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

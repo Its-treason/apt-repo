@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
 use Twig\Environment;
 
-class PackageSuiteAddController
+class PackageSuiteRemoveController
 {
     public function __construct(
         private readonly SuitePackagesRepository   $suitePackagesRepository,
@@ -23,12 +23,14 @@ class PackageSuiteAddController
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $body = $request->getParsedBody();
-        if (empty($body['suite'])) {
+        if (empty($body['suite']) || empty($body['codename'])) {
             // TODO: Error URl
             return $response->withStatus(302)->withHeader('Location', '/ui/suites?error=Missing values');
         }
 
-        [$codename, $suite] = explode('-', $body['suite']);
+        $codename = $body['codename'];
+        $suite = $body['suite'];
+
         $suite = Suite::fromValues($codename, $suite);
         // TODO: Check if suite exists
 
@@ -39,7 +41,7 @@ class PackageSuiteAddController
 
         $package = $this->packageMetadataRepository->getPackageByFilename($packageName);
 
-        $this->suitePackagesRepository->insertPackageIntoSuite($package, $suite);
+        $this->suitePackagesRepository->removePackageFromSuite($package, $suite);
 
         $this->listService->updatePackageLists($suite);
 

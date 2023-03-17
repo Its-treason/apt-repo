@@ -32,6 +32,8 @@ class PackageDetailController
             return $response->withStatus(404);
         }
 
+        $loggedIn = isset($request->getCookieParams()['apiKey']);
+
         $currentSuites = $this->suitePackagesRepository->getAllPackagesForPackage($packageMetadata);
 
         $allSuites = $this->suitesRepository->getAll();
@@ -44,10 +46,11 @@ class PackageDetailController
             }
         }
 
-        $body = $this->twig->render('packageDetail.twig', [
+        $body = $this->twig->render('PackageDetail/packageDetail.twig', [
             'package' => $packageMetadata,
             'currentSuites' => $currentSuites,
             'availableSuites' => $availableSuites,
+            'loggedIn' => $loggedIn,
         ]);
 
         $response->getBody()->write($body);

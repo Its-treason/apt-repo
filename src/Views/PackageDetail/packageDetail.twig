@@ -33,32 +33,12 @@
         </tbody>
     </table>
     <hr/>
-    <h3>Add suite</h3>
-    {% if availableSuites %}
-        <form method="post" action="/ui/packages/{{ package.filename }}/suites" enctype="multipart/form-data">
-            <label>
-                Select suite
-                <select name="suite">
-                    {% for suite in availableSuites %}
-                        <option value="{{ suite.codename }}-{{ suite.suite }}">{{ suite.codename }}
-                            - {{ suite.suite }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <input type="submit" value="Add"/>
-        </form>
+    <pre>{{ package.fullinfo }}</pre>
+    {% if loggedIn %}
+        {% include 'PackageDetail/suiteListLoggedIn.twig' %}
     {% else %}
-        <i>No suites available</i>
+        {% include 'PackageDetail/suiteList.twig' %}
     {% endif %}
-    <h3>All suite</h3>
-    {% if not currentSuites %}
-        <i>Packages in no suites</i>
-    {% endif %}
-    <ul>
-        {% for suite in currentSuites %}
-            <li>{{ suite.codename }} - {{ suite.suite }}</li>
-        {% endfor %}
-    </ul>
 </main>
 <footer>
     <hr/>
