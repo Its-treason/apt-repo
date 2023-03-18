@@ -1,26 +1,21 @@
 # Apt-Repo
 
-**WIP**! Api for creating an Apt-Repository written in PHP.
+Virtual Apt-Repository written in PHP
 
-## Currently working
+## Features
 
-- Uploading deb Packages using the Web-Ui(`/ui/upload`)
-- Adding the Repo to a machine running Debian and installing packages
-- Everything being using gpg-keys
+- Uploading Debian-Packages using the Web-Ui (`/ui/upload`)
+- Everything gpg-keys secured
+- Multiple Suites / Codenames
+- Package list
 
 ## TODO
 
 - Login / Auth for Uploading packages
-- User friendly package List
-- "File"-Explorer to search through the /dist or /pool folder
-- Being able to Delete Packages
-- Better pgp private key handling
-- More options for storing packages like local Filesystem or S3
-- Unittests
+- S3 Support
 - Documentation
-- Multiple suites / components
 
-## Tests
+## Development
 
 ### PHPUnit
 

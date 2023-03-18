@@ -17,14 +17,15 @@
     }
   ],
   "require": {
+    "php": "^8.2",
+    "ext-pdo": "*",
+    "ext-zlib": "*",
     "slim/slim": "^4.10",
     "php-di/php-di": "^6.4",
     "php-di/slim-bridge": "^3.2",
     "storj/uplink": "^1.1",
     "guzzlehttp/psr7": "^2.3",
-    "twig/twig": "^3.4",
-    "ext-pdo": "*",
-    "ext-zlib": "*"
+    "twig/twig": "^3.4"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
