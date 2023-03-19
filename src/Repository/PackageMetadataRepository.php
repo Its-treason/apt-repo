@@ -104,29 +104,16 @@ class PackageMetadataRepository
         return PackageMetadata::fromDbRow($row);
     }
 
-    /**
-     * @return PackageMetadata[]
-     */
-    public function getAllPackageVersionsByPackageName(string $packageName): array
+    public function deletePackage(PackageMetadata $package): void
     {
         $sql = <<<SQL
-            SELECT *, MAX(`upload_date`) FROM `package_metadata`
-            WHERE name = :name
-            GROUP BY version
-            ORDER BY version, arch
+            DELETE FROM package_metadata WHERE package_id = :packageId
         SQL;
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
-            'name' => $packageName,
+            'packageId' => $package->getId(),
         ]);
-
-        $packages = [];
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $packages[] = PackageMetadata::fromDbRow($row);
-        }
-
-        return $packages;
     }
 
     /**

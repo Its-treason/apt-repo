@@ -36,6 +36,10 @@
     <pre>{{ package.fullinfo }}</pre>
     {% if loggedIn %}
         {% include 'PackageDetail/suiteListLoggedIn.twig' %}
+        <hr />
+        <form  method="post" action="/ui/packages/{{ package.filename }}/delete" enctype="multipart/form-data">
+            <input type="submit" value="Delete package" />
+        </form>
     {% else %}
         {% include 'PackageDetail/suiteList.twig' %}
     {% endif %}

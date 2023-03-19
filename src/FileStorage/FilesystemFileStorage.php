@@ -29,4 +29,12 @@ class FilesystemFileStorage implements FileStorageInterface
 
         return new Stream($resource);
     }
+
+    public function deleteFile(string $id): void
+    {
+        $storageLocation = getenv('STORAGE_LOCATION');
+        $target = sprintf('%s/%s.deb', $storageLocation, $id);
+
+        unlink($target);
+    }
 }

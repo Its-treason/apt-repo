@@ -32,9 +32,9 @@ class PackageDetailController
             return $response->withStatus(404);
         }
 
-        $loggedIn = isset($request->getCookieParams()['apiKey']);
+        $loggedIn = isset($request->getCookieParams()['apikey']);
 
-        $currentSuites = $this->suitePackagesRepository->getAllPackagesForPackage($packageMetadata);
+        $currentSuites = $this->suitePackagesRepository->getAllSuitesForPackage($packageMetadata);
 
         $allSuites = $this->suitesRepository->getAll();
 

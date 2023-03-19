@@ -10,44 +10,18 @@ class SuitePackagesRepository
 {
     public function __construct(
         private readonly PDO $pdo
-    )
-    {
-    }
-
-    public function getAllPackagesForSuite(Suite $suite): array
-    {
-        $sql = <<<SQL
-            SELECT * FROM suite_packages 
-            INNER JOIN package_metadata USING package_id 
-            WHERE
-                suite_packages.codename = :codename AND suite_packages.suite = :suite
-        SQL;
-
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
-            'codename' => $suite->getCodename(),
-            'suite' => $suite->getSuite(),
-        ]);
-
-        $packages = [];
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $packages[] = PackageMetadata::fromDbRow($row);
-        }
-
-        return $packages;
-    }
+    ) {}
 
     /**
      * @param PackageMetadata $packageMetadata
      * @return Suite[]
      */
-    public function getAllPackagesForPackage(PackageMetadata $packageMetadata): array
+    public function getAllSuitesForPackage(PackageMetadata $packageMetadata): array
     {
         $sql = <<<SQL
             SELECT * FROM suite_packages 
-            INNER JOIN package_metadata USING(package_id)
             WHERE
-                package_metadata.package_id = :package_id
+                package_id = :package_id
         SQL;
 
         $statement = $this->pdo->prepare($sql);
@@ -92,6 +66,19 @@ class SuitePackagesRepository
         $statement->execute([
             'codename' => $suite->getCodename(),
             'suite' => $suite->getSuite(),
+            'packageId' => $package->getId(),
+        ]);
+    }
+
+    public function removePackageFromAllSuites(PackageMetadata $package): void
+    {
+        $sql = <<<SQL
+            DELETE FROM `suite_packages`
+            WHERE package_id = :packageId
+        SQL;
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
             'packageId' => $package->getId(),
         ]);
     }

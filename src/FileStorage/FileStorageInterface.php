@@ -9,4 +9,6 @@ interface FileStorageInterface
     public function uploadFile(string $id, string $filepath): void;
 
     public function downloadFile(string $id): StreamInterface;
+
+    public function deleteFile(string $id): void;
 }

@@ -10,7 +10,7 @@ class StorjFileStorage implements FileStorageInterface
     public const STORAGE_TYPE = 'storj';
 
     public function __construct(
-        private Project $project,
+        private readonly Project $project,
     ) {}
 
     public function uploadFile(string $id, string $filepath): void
@@ -30,5 +30,12 @@ class StorjFileStorage implements FileStorageInterface
         $download = $this->project->downloadObject($bucket, sprintf('%s.deb', $id));
 
         return $download->toPsrStream();
+    }
+
+    public function deleteFile(string $id): void
+    {
+        $bucket = getenv('STORJ_BUCKET');
+
+        $this->project->deleteObject($bucket, $id . '.deb');
     }
 }

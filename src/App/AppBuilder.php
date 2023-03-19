@@ -20,6 +20,7 @@ use ItsTreason\AptRepo\Api\Ui\FileList\PoolFileListController;
 use ItsTreason\AptRepo\Api\Ui\FileList\RootFileListController;
 use ItsTreason\AptRepo\Api\Ui\Login\LoginActionController;
 use ItsTreason\AptRepo\Api\Ui\Login\LoginFormController;
+use ItsTreason\AptRepo\Api\Ui\PackageList\PackageDeleteController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageDetailController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageListController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageSuiteAddController;
@@ -74,6 +75,7 @@ class AppBuilder
 
         $app->get('/ui/packages[/]', PackageListController::class);
         $app->get('/ui/packages/{packageName}', PackageDetailController::class);
+        $app->post('/ui/packages/{packageName}/delete', PackageDeleteController::class)->add(AuthMiddleware::class);
         $app->post('/ui/packages/{packageName}/addSuite', PackageSuiteAddController::class)->add(AuthMiddleware::class);
         $app->post('/ui/packages/{packageName}/removeSuite', PackageSuiteRemoveController::class)->add(AuthMiddleware::class);
 
