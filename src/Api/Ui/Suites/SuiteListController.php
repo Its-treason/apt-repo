@@ -22,7 +22,7 @@ class SuiteListController
 
         $body = $this->twig->render('suites.twig', [
             'suites' => $suites,
-            'loggedId' => $loggedIn,
+            'loggedIn' => $loggedIn,
         ]);
 
         $response->getBody()->write($body);

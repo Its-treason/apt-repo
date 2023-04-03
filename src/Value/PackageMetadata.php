@@ -29,7 +29,7 @@ class PackageMetadata
     }
 
     public static function fromDbRow(
-        array $row
+        array $row,
     ): static {
         return new self(
             $row['package_id'],
