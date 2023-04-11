@@ -19,8 +19,12 @@
 <br />
 <div>
     <span>You can add this repository using:</span>
-    <pre>  # curl -fsSL {{ host }}/ui/pgp | sudo apt-key add -</pre>
-    <pre>  # echo "deb {{ host }} stable main" >> /etc/apt/sources.list.d/{{ repoNameEscaped }}.list</pre>
+    <pre>  # mkdir -m 0755 -p /etc/apt/keyrings </pre>
+    <pre>  # curl -fsSL http://{{ host }}/ui/pgp | gpg --dearmor -o /etc/apt/keyrings/{{ repoNameEscaped }}.gpg </pre>
+    <pre>  # echo \
+    "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/{{ repoNameEscaped }}.gpg] \
+    https://{{ host }} CODENAME SUITE" |
+    tee /etc/apt/sources.list.d/{{ repoNameEscaped }}packages-its-treason.list >/dev/null </pre>
     <pre>  # apt update</pre>
 </div>
 </body>

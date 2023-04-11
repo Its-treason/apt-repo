@@ -6,6 +6,7 @@ use ItsTreason\AptRepo\Repository\PackageListsRepository;
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
 use ItsTreason\AptRepo\Repository\SuitesRepository;
+use ItsTreason\AptRepo\Value\Suite;
 use Twig\Environment;
 
 class ReleaseFileService
@@ -66,6 +67,8 @@ class ReleaseFileService
         $date = $this->repositoryInfoRepository->getValue('Date');
         $description = $this->repositoryInfoRepository->getValue('Description');
 
+        $suiteList = implode(' ', array_map(static fn (Suite $suite) => $suite->getSuite(), $suites));
+
         return $this->twig->render('Release.twig', [
             'origin' => $origin,
             'label' => $label,
@@ -76,6 +79,8 @@ class ReleaseFileService
             'md5sum' => $md5Sum,
             'sha1' => $sha1,
             'sha256' => $sha256,
+            'codename' => $codename,
+            'suites' => $suiteList,
         ]);
     }
 }

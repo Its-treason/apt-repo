@@ -19,7 +19,7 @@ class SuitePackagesRepository
     public function getAllSuitesForPackage(PackageMetadata $packageMetadata): array
     {
         $sql = <<<SQL
-            SELECT * FROM suite_packages 
+            SELECT * FROM suite_packages
             WHERE
                 package_id = :package_id
         SQL;
