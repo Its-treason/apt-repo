@@ -1,5 +1,7 @@
 <?php
 
+namespace ItsTreason\AptRepo;
+
 use ItsTreason\AptRepo\App\AppBuilder;
 
 require __DIR__ . '/../vendor/autoload.php';

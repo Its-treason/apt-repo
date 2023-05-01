@@ -2,14 +2,14 @@ version: "3.9"
 
 services:
   php-fpm:
-    image: itstreason/apt-repo-php:0.0.0
+    image: itstreason/apt-repo-php:0.0.1
     build:
       context: "."
       dockerfile: "docker/php-fpm/Dockerfile"
       target: "production"
 
   nginx:
-    image: itstreason/apt-repo-nginx:0.0.0
+    image: itstreason/apt-repo-nginx:0.0.1
     build:
       context: "."
       dockerfile: "docker/nginx/Dockerfile"
