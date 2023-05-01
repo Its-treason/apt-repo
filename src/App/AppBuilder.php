@@ -27,6 +27,7 @@ use ItsTreason\AptRepo\Api\Ui\PackageList\PackageSuiteAddController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageSuiteRemoveController;
 use ItsTreason\AptRepo\Api\Ui\RepositoryInfo\RepositoryInfoController;
 use ItsTreason\AptRepo\Api\Ui\Suites\CreateSuiteController;
+use ItsTreason\AptRepo\Api\Ui\Suites\DeleteSuiteController;
 use ItsTreason\AptRepo\Api\Ui\Suites\SuiteListController;
 use ItsTreason\AptRepo\Api\Ui\UploadPackage\UploadPackageActionController;
 use ItsTreason\AptRepo\Api\Ui\UploadPackage\UploadPackageFormController;
@@ -68,7 +69,7 @@ class AppBuilder
 
         $app->get('/ui/suites', SuiteListController::class);
         $app->post('/ui/suites/create', CreateSuiteController::class)->add(AuthMiddleware::class);
-        $app->delete('/ui/suites/create', CreateSuiteController::class)->add(AuthMiddleware::class);
+        $app->post('/ui/suites/delete', DeleteSuiteController::class)->add(AuthMiddleware::class);
 
         $app->get('/ui/login', LoginFormController::class);
         $app->post('/ui/login', LoginActionController::class);

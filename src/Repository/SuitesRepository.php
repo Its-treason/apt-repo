@@ -86,7 +86,7 @@ class SuitesRepository
         ]);
     }
 
-    public function delete(Suite $suite): void
+    public function delete(Suite $suite): bool
     {
         $sql = <<<SQL
             DELETE FROM suites WHERE codename = :codename AND suite = :suite
@@ -97,6 +97,8 @@ class SuitesRepository
             'codename' => $suite->getCodename(),
             'suite' => $suite->getSuite(),
         ]);
+
+        return $statement->rowCount() > 0;
     }
 
     public function exists(Suite $suite): bool

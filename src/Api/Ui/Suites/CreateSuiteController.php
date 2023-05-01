@@ -17,10 +17,15 @@ class CreateSuiteController
     {
         $body = $request->getParsedBody();
         if (empty($body['codename']) || empty($body['suite'])) {
-            return $response->withStatus(302)->withHeader('Location', '/ui/suites?error=Missing values');
+            $queryParams = http_build_query([ 'error' => 'Missing values' ]);
+            return $response->withStatus(302)->withHeader('Location', '/ui/suites?' . $queryParams);
         }
 
         $suite = Suite::fromValues($body['codename'], $body['suite']);
+        if ($this->suitesRepository->exists($suite)) {
+            $queryParams = http_build_query([ 'error' => 'Suite already exists' ]);
+            return $response->withStatus(302)->withHeader('Location', '/ui/suites?' . $queryParams);
+        }
 
         $this->suitesRepository->create($suite);
 

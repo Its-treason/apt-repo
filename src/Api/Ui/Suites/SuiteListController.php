@@ -11,14 +11,14 @@ class SuiteListController
 {
     public function __construct(
         private readonly SuitesRepository $suitesRepository,
-        private readonly Environment              $twig,
+        private readonly Environment      $twig,
     ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $suites = $this->suitesRepository->getAll();
 
-        $loggedIn = isset($request->getCookieParams()['apiKey']);
+        $loggedIn = isset($request->getCookieParams()['apikey']);
 
         $body = $this->twig->render('suites.twig', [
             'suites' => $suites,

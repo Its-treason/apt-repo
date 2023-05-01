@@ -24,14 +24,24 @@
         <hr />
     {% endif %}
     <h2>All suites</h2>
-    <ul>
+    <table>
     {% for suite in suites %}
-        <li>{{ suite.codename }} - {{ suite.suite }}</li>
+        <tr>
+            <td>{{ suite.codename }} - {{ suite.suite }}</td>
+            <td>
+                <form method="post" action="/ui/suites/delete" enctype="multipart/form-data">
+                    <input type="hidden" name="codename" value="{{ suite.codename }}" />
+                    <input type="hidden" name="suite" value="{{ suite.suite }}" />
+                    <input type="submit" value="Remove" />
+                </form>
+            </td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 </main>
 <footer>
-
+    <hr/>
+    <a href="/ui/">Back to repository info</a>
 </footer>
 </body>
 </html>
