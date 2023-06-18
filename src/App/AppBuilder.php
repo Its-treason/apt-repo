@@ -18,6 +18,9 @@ use ItsTreason\AptRepo\Api\Ui\FileList\PoolComponentFileListController;
 use ItsTreason\AptRepo\Api\Ui\FileList\PoolFileListController;
 use ItsTreason\AptRepo\Api\Ui\FileList\RootFileListController;
 use ItsTreason\AptRepo\Api\Ui\FileList\SuiteFileListController;
+use ItsTreason\AptRepo\Api\Ui\GitHubSubscription\GitHubSubscriptionCreateController;
+use ItsTreason\AptRepo\Api\Ui\GitHubSubscription\GitHubSubscriptionDeleteController;
+use ItsTreason\AptRepo\Api\Ui\GitHubSubscription\GitHubSubscriptionFormController;
 use ItsTreason\AptRepo\Api\Ui\Login\LoginActionController;
 use ItsTreason\AptRepo\Api\Ui\Login\LoginFormController;
 use ItsTreason\AptRepo\Api\Ui\PackageList\PackageDeleteController;
@@ -70,6 +73,10 @@ class AppBuilder
         $app->get('/ui/suites', SuiteListController::class);
         $app->post('/ui/suites/create', CreateSuiteController::class)->add(AuthMiddleware::class);
         $app->post('/ui/suites/delete', DeleteSuiteController::class)->add(AuthMiddleware::class);
+
+        $app->get('/ui/subscription', GitHubSubscriptionFormController::class);
+        $app->post('/ui/subscription/create', GitHubSubscriptionCreateController::class)->add(AuthMiddleware::class);
+        $app->post('/ui/subscription/delete', GitHubSubscriptionDeleteController::class)->add(AuthMiddleware::class);
 
         $app->get('/ui/login', LoginFormController::class);
         $app->post('/ui/login', LoginActionController::class);
