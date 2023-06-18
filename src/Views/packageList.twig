@@ -4,9 +4,22 @@
     <title>Packages</title>
 </head>
 <body>
-<div>
-    <h1>Packages</h1>
-</div>
+<main>
+<a href="/ui">Back to repository info</a>
+<h1>Packages</h1>
+<form method="GET" action="/ui/packages">
+    <label for="groupPackages">
+        Group packages by name:
+        <input name="groupPackages" type="checkbox" {% if groupPackages %}checked{% endif %} id="groupPackages" />
+    <label>
+    <br />
+    <label for="search">
+        Search:
+        <input name="search" value="{{ search }}" id="search" />
+    </label>
+    <input type="submit" value="Search" />
+</form>
+<hr />
 <ul>
     {% for package in packages %}
         <li><a href="/ui/packages/{{ package }}">{{ package }}</a></li>
@@ -14,5 +27,6 @@
 </ul>
 <hr />
 <a href="/ui">Back to repository info</a>
+</main>
 </body>
 </html>

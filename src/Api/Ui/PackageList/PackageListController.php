@@ -16,15 +16,20 @@ class PackageListController
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $packagesMetadata = $this->packageMetadataRepository->getAllPackages();
+        $search = $request->getQueryParams()['search'] ?? '';
+        $groupPackages = isset($request->getQueryParams()['groupPackages']);
 
-        $packages = [];
-        foreach ($packagesMetadata as $packageMetadata) {
-            $packages[] = $packageMetadata->getFilename();
+        if ($groupPackages) {
+            $packages = $this->packageMetadataRepository->getAllPackageNames($search);
+        } else {
+            $packagesMetadata = $this->packageMetadataRepository->getAllPackages($search);
+            $packages = array_map(static fn ($metadata) => $metadata->getFilename(), $packagesMetadata);
         }
 
         $body = $this->twig->render('packageList.twig', [
             'packages' => $packages,
+            'groupPackages' => $groupPackages,
+            'search' => $search,
         ]);
 
         $response->getBody()->write($body);

@@ -28,7 +28,7 @@ class UploadPackageActionController
         $file = $files['package'];
 
         try {
-            //$metadata = $this->packageParser->
+            $metadata = $this->packageParser->collectPackageMetadata($file);
         } catch (Exception $exception) {
             $message = urlencode('Failed to parse package: ' . $exception->getMessage());
             return $response->withStatus(302)

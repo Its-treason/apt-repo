@@ -34,18 +34,47 @@ class PackageMetadataRepository
     }
 
     /**
+     * @return string[]
+     */
+    public function getAllPackageNames(string $search = ''): array
+    {
+        $sql = <<<SQL
+            SELECT `name`
+            FROM `package_metadata`
+            WHERE name LIKE :search
+            GROUP BY name
+            ORDER BY name
+        SQL;
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'search' => '%' . $search . '%',
+        ]);
+
+        $packages = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $packages[] = $row['name'];
+        }
+
+        return $packages;
+    }
+
+    /**
      * @return PackageMetadata[]
      */
-    public function getAllPackages(): array
+    public function getAllPackages(string $search = ''): array
     {
         $sql = <<<SQL
             SELECT *
             FROM `package_metadata`
+            WHERE name LIKE :search
             ORDER BY name, version DESC, arch
         SQL;
 
         $statement = $this->pdo->prepare($sql);
-        $statement->execute();
+        $statement->execute([
+            'search' => '%' . $search . '%',
+        ]);
 
         $packages = [];
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
