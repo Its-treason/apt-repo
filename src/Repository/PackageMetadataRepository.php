@@ -41,6 +41,7 @@ class PackageMetadataRepository
         $sql = <<<SQL
             SELECT *
             FROM `package_metadata`
+            ORDER BY name, version DESC, arch
         SQL;
 
         $statement = $this->pdo->prepare($sql);
@@ -65,7 +66,7 @@ class PackageMetadataRepository
             INNER JOIN suite_packages USING (package_id)
             WHERE codename = :codename AND suite = :suite
             GROUP BY name
-            ORDER BY name 
+            ORDER BY name
         SQL;
 
         $statement = $this->pdo->prepare($sql);
