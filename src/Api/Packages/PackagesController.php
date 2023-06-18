@@ -36,6 +36,7 @@ class PackagesController
 
         $response->getBody()->write($packageList->getContent());
         return $response->withHeader('Content-Type', 'application/octet-stream')
+            ->withHeader('Cache-Control', 'public, max-age=600')
             ->withStatus(200);
     }
 }

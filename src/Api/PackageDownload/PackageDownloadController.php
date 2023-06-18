@@ -33,9 +33,9 @@ class PackageDownloadController
         }
 
         $downloadStream = $this->fileStorage->downloadFile($packageMetadata->getId());
-
         return $response->withBody($downloadStream)
             ->withHeader('Content-Type', 'application/vnd.debian.binary-package')
+            ->withHeader('Cache-Control', 'public, max-age=86400')
             ->withStatus(200);
     }
 }

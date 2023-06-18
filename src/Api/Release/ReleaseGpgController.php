@@ -27,6 +27,8 @@ class ReleaseGpgController
         $gpg = $this->gpgSignService->createReleaseGpg($release);
 
         $response->getBody()->write($gpg);
-        return $response->withHeader('Content-Type', 'text/plain')->withStatus(200);
+        return $response->withHeader('Content-Type', 'text/plain')
+          ->withHeader('Cache-Control', 'public, max-age=600')
+          ->withStatus(200);
     }
 }
