@@ -29,7 +29,7 @@ class RepositoryInfoController
         );
 
         $repoName = $this->repositoryInfoRepository->getValue('Origin');
-        $repoNameEscaped = str_replace(' ', '_', strtolower($repoName));
+        $repoNameEscaped = str_replace([' ', '.'], '_', strtolower($repoName));
         $repoDescription = $this->repositoryInfoRepository->getValue('Description');
 
         $body = $this->twig->render('repositoryInfo.twig', [

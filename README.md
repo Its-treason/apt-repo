@@ -11,7 +11,6 @@ Virtual Apt-Repository written in PHP
 
 ## TODO
 
-- Login / Auth for Uploading packages
 - S3 Support
 - Documentation
 

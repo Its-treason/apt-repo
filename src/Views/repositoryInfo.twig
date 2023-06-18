@@ -23,8 +23,8 @@
     <pre>  # curl -fsSL http://{{ host }}/ui/pgp | gpg --dearmor -o /etc/apt/keyrings/{{ repoNameEscaped }}.gpg </pre>
     <pre>  # echo \
     "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/{{ repoNameEscaped }}.gpg] \
-    https://{{ host }} CODENAME SUITE" |
-    tee /etc/apt/sources.list.d/{{ repoNameEscaped }}packages-its-treason.list >/dev/null </pre>
+    {{ host }} CODENAME COMPONENT" |
+    tee /etc/apt/sources.list.d/{{ repoNameEscaped }}.list > /dev/null </pre>
     <pre>  # apt update</pre>
 </div>
 </body>
