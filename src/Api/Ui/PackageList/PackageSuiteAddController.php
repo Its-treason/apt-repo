@@ -4,13 +4,11 @@ namespace ItsTreason\AptRepo\Api\Ui\PackageList;
 
 use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
 use ItsTreason\AptRepo\Repository\SuitePackagesRepository;
-use ItsTreason\AptRepo\Repository\SuitesRepository;
 use ItsTreason\AptRepo\Service\PackageListService;
 use ItsTreason\AptRepo\Value\Suite;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Routing\RouteContext;
-use Twig\Environment;
 
 class PackageSuiteAddController
 {

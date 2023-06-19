@@ -2,7 +2,6 @@
 
 namespace ItsTreason\AptRepo\Repository;
 
-use ItsTreason\AptRepo\Api\Ui\Suites\SuiteListController;
 use ItsTreason\AptRepo\Value\Suite;
 use PDO;
 

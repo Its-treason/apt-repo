@@ -41,6 +41,7 @@ class GitHubSubscriptionCreateController
 
         try {
             $releases = $this->githubApi->getNewReleases($subscription);
+            $releases = array_slice($releases, 0, 2);
         } catch (Exception $exception) {
             $message = urlencode('Failed to fetch Release: ' . $exception->getMessage());
             return $response->withStatus(302)
@@ -49,24 +50,8 @@ class GitHubSubscriptionCreateController
 
         $lastRelease = null;
         foreach ($releases as $release) {
-            $lastRelease = $release->getReleaseName();
-            foreach ($release->getFiles() as $downloadUrl) {
-                try {
-                    $file = sprintf('/tmp/%s.deb', bin2hex(random_bytes(12)));
-                    $this->httpClient->get($downloadUrl, [
-                        RequestOptions::SINK => $file,
-                        RequestOptions::ALLOW_REDIRECTS => true,
-                    ]);
-
-                    $metadata = $this->packageParser->collectPackageMetadata($file);
-
-                    if (!$this->packageMetadataRepository->getPackageByFilename($metadata->getFilename())) {
-                        $this->packageMetadataRepository->insertPackageMetadata($metadata);
-                    }
-                } catch (Exception $exception) {
-                    error_log($exception);
-                }
-            }
+            $lastRelease = $lastRelease ?? $release->getReleaseName();
+            $this->packageParser->addPackagesFromRelease($release);
         }
 
         if (!$lastRelease) {

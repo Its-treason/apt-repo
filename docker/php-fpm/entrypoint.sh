@@ -13,5 +13,7 @@ fi
 
 su www-data -s /bin/sh -c "cat /opt/pgp-key.private | gpg --import"
 
+/usr/local/bin/supercronic /crontab &
+
 # Execute the default entrypoint
 php-fpm

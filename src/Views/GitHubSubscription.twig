@@ -9,16 +9,22 @@
     <div>Every hour all repos will be checked for new releases</div>
     <ul>
         {% for subscription in subscriptions %}
-            <li style="display: block ruby">
+            {% if loggedIn == true %}
+                <li style="display: block ruby">
+                    <a href="https://github.com/{{ subscription.owner }}/{{ subscription.name }}">
+                        {{ subscription.owner }}/{{ subscription.name }}
+                    </a>
+                    <form action="/ui/subscription/delete" method="post">
+                        <input name="owner" type="hidden" value="{{ subscription.owner }}" />
+                        <input name="name" type="hidden" value="{{ subscription.name }}" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {% else %}
                 <a href="https://github.com/{{ subscription.owner }}/{{ subscription.name }}">
                     {{ subscription.owner }}/{{ subscription.name }}
                 </a>
-                <form action="/ui/subscription/delete" method="post">
-                    <input name="owner" type="hidden" value="{{ subscription.owner }}" />
-                    <input name="name" type="hidden" value="{{ subscription.name }}" />
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
+            {% endif %}
         {% endfor %}
     </ul>
     {% if loggedIn == true %}

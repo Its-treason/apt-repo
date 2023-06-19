@@ -12,7 +12,7 @@ class GitHubSubscriptionRepository
     ) {}
 
     /**
-     * @return Suite[]
+     * @return GitHubSubscription[]
      */
     public function getAll(): array
     {

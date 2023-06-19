@@ -34,4 +34,9 @@ class GitHubSubscription
     {
         return $this->lastRelease;
     }
+
+    public function withNewLastRelease(string $lastRelease): self
+    {
+        return new self($this->owner, $this->name, $lastRelease);
+    }
 }

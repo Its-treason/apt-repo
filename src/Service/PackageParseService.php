@@ -3,7 +3,12 @@
 namespace ItsTreason\AptRepo\Service;
 
 use DateTime;
+use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use ItsTreason\AptRepo\FileStorage\FileStorageInterface;
+use ItsTreason\AptRepo\Repository\PackageMetadataRepository;
+use ItsTreason\AptRepo\Value\GitHubRelease;
 use ItsTreason\AptRepo\Value\PackageMetadata;
 use GuzzleHttp\Psr7\UploadedFile;
 use RuntimeException;
@@ -12,6 +17,8 @@ class PackageParseService
 {
     function __construct(
         private readonly FileStorageInterface $fileStorage,
+        private readonly Client $httpClient,
+        private readonly PackageMetadataRepository $packageMetadataRepository,
     ) {}
 
     public function collectPackageMetadata(UploadedFile|string $file): PackageMetadata
@@ -78,5 +85,25 @@ class PackageParseService
         $uploadDate = new DateTime();
 
         return PackageMetadata::fromValues($packageId, $name, $version, $arch, $filename, $fullInfo, $uploadDate);
+    }
+
+    public function addPackagesFromRelease(GitHubRelease $release): void
+    {
+        foreach ($release->getFiles() as $downloadUrl) {
+            try {
+                $file = sprintf('/tmp/%s.deb', bin2hex(random_bytes(12)));
+                $this->httpClient->get($downloadUrl, [
+                    RequestOptions::SINK => $file,
+                    RequestOptions::ALLOW_REDIRECTS => true,
+                ]);
+
+                $metadata = $this->collectPackageMetadata($file);
+                if (!$this->packageMetadataRepository->getPackageByFilename($metadata->getFilename())) {
+                    $this->packageMetadataRepository->insertPackageMetadata($metadata);
+                }
+            } catch (Exception $exception) {
+                error_log($exception);
+            }
+        }
     }
 }

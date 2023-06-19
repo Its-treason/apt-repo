@@ -1,22 +1,34 @@
-FROM composer:2.3.7 AS composer
+FROM composer:2.3 AS composer
 
-FROM php:8.2-fpm-buster AS base
+FROM php:8.2-fpm-alpine AS base
 
-RUN apt update && \
-    apt install dpkg-dev libffi-dev gpg git zip unzip -y && \
-    docker-php-ext-install -j$(nproc) pdo_mysql pdo ffi
+RUN mkdir /app
+WORKDIR /app
+
+RUN apk add libffi-dev gpg gpg-agent git zip unzip dpkg-dev dpkg \
+ && docker-php-ext-install -j$(nproc) pdo_mysql pdo ffi
 
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 # Change so owner of the www-data home so it can create the .gnupg dir
 RUN chown www-data:www-data /var/www -R
 
-COPY docker/php-fpm/importPgpKey.sh /opt/importPgpKey.sh
-RUN chmod +x /opt/importPgpKey.sh
-ENTRYPOINT [ "/opt/importPgpKey.sh" ]
+COPY docker/php-fpm/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+CMD [ "/entrypoint.sh" ]
 
-RUN mkdir /app
-WORKDIR /app
+ARG TARGETARCH
+# Latest releases available at https://github.com/aptible/supercronic/releases
+ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.25/supercronic-linux-${TARGETARCH} \
+    SUPERCRONIC=supercronic-linux-${TARGETARCH} \
+    SUPERCRONIC_SHA1SUM=642f4f5a2b67f3400b5ea71ff24f18c0a7d77d49
+
+RUN curl -fsSLO "$SUPERCRONIC_URL" \
+ && chmod +x "$SUPERCRONIC" \
+ && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
+ && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
+
+COPY docker/php-fpm/crontab /crontab
 
 FROM base AS development
 
