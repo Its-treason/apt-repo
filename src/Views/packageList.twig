@@ -22,7 +22,11 @@
 <hr />
 <ul>
     {% for package in packages %}
-        <li><a href="/ui/packages/{{ package }}">{{ package }}</a></li>
+        {% if groupPackages %}
+            <li><a href="/ui/packages?search={{ package }}">{{ package }}</a></li>
+        {% else %}
+            <li><a href="/ui/packages/{{ package }}">{{ package }}</a></li>
+        {% endif %}
     {% endfor %}
 </ul>
 <hr />
