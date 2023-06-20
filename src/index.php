@@ -21,7 +21,6 @@ if (php_sapi_name() === 'cli') {
     $app = new Application();
     $app->setCommandLoader($commandLoader);
     $code = $app->run();
-
     die($code);
 }
 

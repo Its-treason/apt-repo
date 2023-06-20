@@ -25,7 +25,7 @@ class GitHubApiService {
 
         $releases = [];
         foreach ($releaseData as $release) {
-            $name = $release['name'];
+            $name = $release['id'];
             // The Api return all releases from latest to oldest
             if ($subscription->getLastRelease() === $name) {
                 break;
