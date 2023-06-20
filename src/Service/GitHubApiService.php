@@ -25,8 +25,14 @@ class GitHubApiService {
 
         $releases = [];
         foreach ($releaseData as $release) {
+            // Skip prereleases, TODO: Add a flag for this in the GitHubSubscription
+            if ($release['draft'] || $release['prerelease']) {
+                continue;
+            }
+
             $name = $release['id'];
-            // The Api return all releases from latest to oldest
+            // The Api return all releases from latest to oldest.
+            // When the reached the last downloaded we are up to up to date.
             if ($subscription->getLastRelease() === $name) {
                 break;
             }

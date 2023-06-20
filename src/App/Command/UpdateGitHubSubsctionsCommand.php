@@ -36,7 +36,7 @@ class UpdateGitHubSubsctionsCommand extends Command
 
             $lastRelease = null;
             foreach ($releases as $release) {
-                $lastRelease = $release->getReleaseName();
+                $lastRelease = $lastRelease ?? $release->getReleaseName();
                 $this->packageParser->addPackagesFromRelease($release);
             }
 

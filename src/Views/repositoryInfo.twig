@@ -8,26 +8,24 @@
     <h1>{{ repoName }}</h1>
     <span>{{ repoDescription }}</span>
 </div>
-<br />
-<div>
-    <a href="/ui/packages/">List of all Packages</a>
-    <br />
-    <a href="/ui/suites">List of all suites</a>
-    <br />
-    <a href="/ui/upload">Upload package</a>
-    <br />
-    <a href="/ui/subscription">GitHub repository subscriptions</a>
-</div>
-<br />
+<ul>
+    <li><a href="/ui/packages/">List of all Packages</a></li>
+    <li><a href="/ui/suites">List of all suites</a></li>
+    <li><a href="/ui/upload">Upload package</a></li>
+    <li><a href="/ui/subscription">GitHub repository subscriptions</a></li>
+    <li><a href="/">Back to file list</a></li>
+</ul>
+<hr />
 <div>
     <span>You can add this repository using:</span>
-    <pre>  # mkdir -m 0755 -p /etc/apt/keyrings </pre>
-    <pre>  # curl -fsSL http://{{ host }}/ui/pgp | gpg --dearmor -o /etc/apt/keyrings/{{ repoNameEscaped }}.gpg </pre>
-    <pre>  # echo \
+    <pre># mkdir -m 0755 -p /etc/apt/keyrings</pre>
+    <pre># curl -fsSL http://{{ host }}/ui/pgp | gpg --dearmor -o /etc/apt/keyrings/{{ repoNameEscaped }}.gpg </pre>
+    <span>Replace CODENAME COMPONENT with values from <a href="/ui/suites">list of all suites</a></span>
+    <pre># echo \
     "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/{{ repoNameEscaped }}.gpg] \
     {{ host }} CODENAME COMPONENT" |
     tee /etc/apt/sources.list.d/{{ repoNameEscaped }}.list > /dev/null </pre>
-    <pre>  # apt update</pre>
+    <pre># apt update</pre>
 </div>
 </body>
 </html>
