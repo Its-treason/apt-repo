@@ -33,7 +33,7 @@ class GitHubApiService {
             $name = $release['id'];
             // The Api return all releases from latest to oldest.
             // When the reached the last downloaded we are up to up to date.
-            if ($subscription->getLastRelease() === $name) {
+            if ($subscription->getLastRelease() === (string)$name) {
                 break;
             }
 
