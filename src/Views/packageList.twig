@@ -8,27 +8,63 @@
 <a href="/ui">Back to repository info</a>
 <h1>Packages</h1>
 <form method="GET" action="/ui/packages">
-    <label for="groupPackages">
-        Group packages by name:
-        <input name="groupPackages" type="checkbox" {% if groupPackages %}checked{% endif %} id="groupPackages" />
-    <label>
-    <br />
     <label for="search">
         Search:
         <input name="search" value="{{ search }}" id="search" />
     </label>
     <input type="submit" value="Search" />
+    <br />
+    <br />
+    <label for="groupPackages">
+        Group packages by name:
+        <input name="groupPackages" type="checkbox" {% if groupPackages %}checked{% endif %} id="groupPackages" />
+    </label>
+    <br />
+    <br />
+    <fieldset style="border: 0">
+        <div>
+            <input type="radio" id="sort-name" name="sort" value="name" {% if sort == "name" %}checked{% endif %} />
+            <label for="sort-name">
+                Sort by name
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="sort-date" name="sort" value="date" {% if sort == "date" %}checked{% endif %} />
+            <label for="sort-date">
+                Sort by upload date
+            </label>
+        </div>
+    </fieldset>
 </form>
 <hr />
-<ul>
+<table style="border-spacing: 0.5rem 0.25rem ">
+    {% if groupPackages %}
+        <tr>
+            <th>Name</th>
+            <th>Last uploaded date</th>
+            <th>Total packages</th>
+        </tr>
+    {% else %}
+        <tr>
+            <th>Name</th>
+            <th>uploaded date</th>
+        </tr>
+    {% endif %}
     {% for package in packages %}
         {% if groupPackages %}
-            <li><a href="/ui/packages?search={{ package }}">{{ package }}</a></li>
+            <tr>
+                <td><a href="/ui/packages?search={{ package.name }}">{{ package.name }}</a></td>
+                <td>{{ package.uploadDate|date("Y-m-d H:m") }}</td>
+                <td>{{ package.totalPackages }}</td>
+            </tr>
         {% else %}
-            <li><a href="/ui/packages/{{ package }}">{{ package }}</a></li>
+            <tr>
+                <td><a href="/ui/packages/{{ package.filename }}">{{ package.filename }}</a></td>
+                <td>{{ package.uploadDate|date("Y-m-d H:m") }}</td>
+            </tr>
         {% endif %}
     {% endfor %}
-</ul>
+</table>
 <hr />
 <a href="/ui">Back to repository info</a>
 </main>

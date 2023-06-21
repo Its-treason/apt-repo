@@ -3,6 +3,7 @@
 namespace ItsTreason\AptRepo\Repository;
 
 use ItsTreason\AptRepo\Value\PackageMetadata;
+use ItsTreason\AptRepo\Value\GroupedPackageMetadata;
 use ItsTreason\AptRepo\Value\Suite;
 use PDO;
 
@@ -36,14 +37,20 @@ class PackageMetadataRepository
     /**
      * @return string[]
      */
-    public function getAllPackageNames(string $search = ''): array
+    public function getAllPackageGroupedByName(string $search = '', string $sort = 'name'): array
     {
+        $sortSql = match ($sort) {
+            'name' => 'name',
+            'date' => 'upload_date DESC',
+            default => 'name',
+        };
+
         $sql = <<<SQL
-            SELECT `name`
+            SELECT `name`, MAX(`upload_date`) AS upload_date, COUNT(*) as total_packages
             FROM `package_metadata`
             WHERE name LIKE :search
             GROUP BY name
-            ORDER BY name
+            ORDER BY $sortSql
         SQL;
 
         $statement = $this->pdo->prepare($sql);
@@ -53,7 +60,7 @@ class PackageMetadataRepository
 
         $packages = [];
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $packages[] = $row['name'];
+            $packages[] = GroupedPackageMetadata::fromDbRow($row);
         }
 
         return $packages;
@@ -62,13 +69,19 @@ class PackageMetadataRepository
     /**
      * @return PackageMetadata[]
      */
-    public function getAllPackages(string $search = ''): array
+    public function getAllPackages(string $search = '', string $sort = 'name'): array
     {
+        $sortSql = match ($sort) {
+            'name' => 'name, version DESC, arch',
+            'date' => 'upload_date DESC',
+            default => 'name, version DESC, arch',
+        };
+
         $sql = <<<SQL
             SELECT *
             FROM `package_metadata`
             WHERE name LIKE :search
-            ORDER BY name, version DESC, arch
+            ORDER BY $sortSql
         SQL;
 
         $statement = $this->pdo->prepare($sql);

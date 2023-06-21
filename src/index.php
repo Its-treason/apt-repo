@@ -26,6 +26,4 @@ if (php_sapi_name() === 'cli') {
 
 $appBuilder = new AppBuilder();
 $app = $appBuilder->build();
-
 $app->run();
-

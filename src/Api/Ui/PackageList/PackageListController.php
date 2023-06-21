@@ -15,21 +15,25 @@ class PackageListController
     ) {}
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
-    {
+    {;
         $search = $request->getQueryParams()['search'] ?? '';
         $groupPackages = isset($request->getQueryParams()['groupPackages']);
+        $sort = $request->getQueryParams()['sort'] ?? 'name';
+        if ($sort !== 'name' && $sort !== 'date') {
+            $sort = 'name';
+        }
 
         if ($groupPackages) {
-            $packages = $this->packageMetadataRepository->getAllPackageNames($search);
+            $packages = $this->packageMetadataRepository->getAllPackageGroupedByName($search, $sort);
         } else {
-            $packagesMetadata = $this->packageMetadataRepository->getAllPackages($search);
-            $packages = array_map(static fn ($metadata) => $metadata->getFilename(), $packagesMetadata);
+            $packages = $this->packageMetadataRepository->getAllPackages($search, $sort);
         }
 
         $body = $this->twig->render('packageList.twig', [
             'packages' => $packages,
             'groupPackages' => $groupPackages,
             'search' => $search,
+            'sort' => $sort,
         ]);
 
         $response->getBody()->write($body);
