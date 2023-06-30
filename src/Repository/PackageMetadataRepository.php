@@ -107,7 +107,6 @@ class PackageMetadataRepository
             FROM `package_metadata`
             INNER JOIN suite_packages USING (package_id)
             WHERE codename = :codename AND suite = :suite
-            GROUP BY name
             ORDER BY name
         SQL;
 
