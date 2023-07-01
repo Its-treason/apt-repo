@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsTreason\AptRepo\App\Command;
+namespace ItsTreason\AptRepo\Command\Cron;
 
 use ItsTreason\AptRepo\Repository\GitHubSubscriptionRepository;
 use ItsTreason\AptRepo\Service\GitHubApiService;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateGitHubSubsctionsCommand extends Command
 {
-    public const NAME = 'update-github-subscriptions';
+    public const NAME = 'cron:update-github-subscriptions';
 
     public function __construct(
         private readonly GitHubApiService $githubApi,
@@ -48,6 +48,6 @@ class UpdateGitHubSubsctionsCommand extends Command
             $this->subscriptionRepository->insert($subscription);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 }

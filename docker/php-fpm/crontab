@@ -1,3 +1,3 @@
 # Github subscriptions
-0 * * * * php /app/src/index.php update-github-subscriptions
+0 * * * * php /app/src/index.php cron:update-github-subscriptions
 

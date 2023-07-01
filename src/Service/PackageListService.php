@@ -49,6 +49,8 @@ class PackageListService
             $rawContent .= $package->getFullInfo();
         }
 
+        var_dump($rawContent);
+
         $rawMd3sum = hash('md5', $rawContent);
         $rawSha1 = hash('sha1', $rawContent);
         $rawSha256 = hash('sha256', $rawContent);
