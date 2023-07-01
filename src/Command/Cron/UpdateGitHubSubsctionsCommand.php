@@ -5,6 +5,7 @@ namespace ItsTreason\AptRepo\Command\Cron;
 use ItsTreason\AptRepo\Repository\GitHubSubscriptionRepository;
 use ItsTreason\AptRepo\Service\GitHubApiService;
 use ItsTreason\AptRepo\Service\PackageParseService;
+use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,6 +18,7 @@ class UpdateGitHubSubsctionsCommand extends Command
         private readonly GitHubApiService $githubApi,
         private readonly GitHubSubscriptionRepository $subscriptionRepository,
         private readonly PackageParseService $packageParser,
+        private readonly Logger $logger,
     ) {
         parent::__construct();
     }
@@ -36,6 +38,12 @@ class UpdateGitHubSubsctionsCommand extends Command
 
             $lastRelease = null;
             foreach ($releases as $release) {
+                $this->logger->info('Found new github release', [
+                    'repository' => sprintf('%s/%s', $subscription->getOwner(), $subscription->getName()),
+                    'newVersion' => $release->getReleaseName(),
+                    'fileFiles' => $release->getFiles(),
+                ]);
+
                 $lastRelease = $lastRelease ?? $release->getReleaseName();
                 $this->packageParser->addPackagesFromRelease($release);
             }

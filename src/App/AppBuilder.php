@@ -42,11 +42,9 @@ class AppBuilder
     public function build(): App
     {
         $container = ContainerFactory::buildContainer();
-
         $app = Bridge::create($container);
 
         $app->addRoutingMiddleware();
-
         $this->addErrorMiddleware($app);
         $this->addAppRoutes($app);
 

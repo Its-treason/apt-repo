@@ -9,6 +9,7 @@ use ItsTreason\AptRepo\Repository\RepositoryInfoRepository;
 use ItsTreason\AptRepo\Value\PackageList;
 use ItsTreason\AptRepo\Value\PackageMetadata;
 use ItsTreason\AptRepo\Value\Suite;
+use Monolog\Logger;
 
 class PackageListService
 {
@@ -16,11 +17,18 @@ class PackageListService
         private readonly PackageMetadataRepository $packageMetadataRepository,
         private readonly PackageListsRepository $packageListsRepository,
         private readonly RepositoryInfoRepository $repositoryInfoRepository,
+        private readonly Logger $logger,
     ) {}
 
     public function updatePackageLists(Suite $suite): void
     {
         $allPackages = $this->packageMetadataRepository->getAllPackagesForSuite($suite);
+
+        $this->logger->info('Updating package list', [
+            'codename' => $suite->getCodename(),
+            'component' => $suite->getSuite(),
+            'packageCount' => count($allPackages),
+        ]);
 
         $groupedPackages = [];
         foreach ($allPackages as $package) {
@@ -40,6 +48,7 @@ class PackageListService
     /**
      * @param PackageMetadata[] $packages
      * @param string $arch
+     * @param Suite $suite
      * @return void
      */
     private function createPackageList(array $packages, string $arch, Suite $suite): void
@@ -48,8 +57,6 @@ class PackageListService
         foreach ($packages as $package) {
             $rawContent .= $package->getFullInfo();
         }
-
-        var_dump($rawContent);
 
         $rawMd3sum = hash('md5', $rawContent);
         $rawSha1 = hash('sha1', $rawContent);

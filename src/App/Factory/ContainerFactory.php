@@ -2,16 +2,14 @@
 
 namespace ItsTreason\AptRepo\App\Factory;
 
+use Monolog\Logger;
 use PDO;
 use DI\Container;
 use DI\ContainerBuilder as DIContainerBuilder;
 use ItsTreason\AptRepo\FileStorage\FileStorageInterface;
 use ItsTreason\AptRepo\FileStorage\FileStorageFactory;
-use ItsTreason\AptRepo\App\Factory\UplinkFactory;
 use Storj\Uplink\Project;
 use Twig\Environment;
-use ItsTreason\AptRepo\App\Factory\TwigFactory;
-use ItsTreason\AptRepo\App\Factory\PdoFactory;
 use function DI\factory;
 
 class ContainerFactory
@@ -25,9 +23,9 @@ class ContainerFactory
             Environment::class => factory(TwigFactory::class),
             Project::class => factory(UplinkFactory::class),
             FileStorageInterface::class => factory(FileStorageFactory::class),
+            Logger::class => factory(LoggerFactory::class),
         ]);
 
         return $builder->build();
     }
 }
-

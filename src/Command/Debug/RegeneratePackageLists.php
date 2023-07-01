@@ -4,6 +4,7 @@ namespace ItsTreason\AptRepo\Command\Debug;
 
 use ItsTreason\AptRepo\Repository\SuitesRepository;
 use ItsTreason\AptRepo\Service\PackageListService;
+use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,8 +14,8 @@ class RegeneratePackageLists extends Command
     public const NAME = 'debug:regenerate-package-lists';
 
     public function __construct(
-        private readonly PackageListService $packagelistService,
-        private readonly SuitesRepository $suitesRepository,
+        private readonly PackageListService $packageListService,
+        private readonly SuitesRepository   $suitesRepository,
     ) {
         parent::__construct();
     }
@@ -30,7 +31,7 @@ class RegeneratePackageLists extends Command
         $suites = $this->suitesRepository->getAll();
 
         foreach ($suites as $suite) {
-            $this->packagelistService->updatePackageLists($suite);
+            $this->packageListService->updatePackageLists($suite);
         }
 
         return self::SUCCESS;
