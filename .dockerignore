@@ -1,2 +1,11 @@
-pgp-key.private
-package_data/*
+package_data
+vendor
+.dockerignore
+.env
+.env.example
+.gitignore
+docker-compose.*
+
+*.xml
+*.md
+*pgp*

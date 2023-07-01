@@ -5,8 +5,8 @@ FROM php:8.2-fpm-alpine AS base
 RUN mkdir /app
 WORKDIR /app
 
-RUN apk add libffi-dev gpg gpg-agent git zip unzip dpkg-dev dpkg \
- && docker-php-ext-install -j$(nproc) pdo_mysql pdo ffi
+RUN apk add --no-cache libffi-dev gpg gpg-agent git zip unzip dpkg-dev dpkg \
+ && docker-php-ext-install -j$(nproc) pdo_mysql pdo ffi opcache
 
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
@@ -17,8 +17,8 @@ COPY docker/php-fpm/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 CMD [ "/entrypoint.sh" ]
 
-ARG TARGETARCH
 # Latest releases available at https://github.com/aptible/supercronic/releases
+ARG TARGETARCH
 ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.25/supercronic-linux-${TARGETARCH} \
     SUPERCRONIC=supercronic-linux-${TARGETARCH} \
     SUPERCRONIC_SHA1SUM=642f4f5a2b67f3400b5ea71ff24f18c0a7d77d49
@@ -36,15 +36,19 @@ ENV APP_ENV="development"
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
+FROM base AS build
+
+COPY . /app
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN rm -rf /app/vendor /app/docker \
+ && composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --classmap-authoritative
+
 FROM base AS production
 
 ENV APP_ENV="production"
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY docker/php-fpm/opcache.ini /usr/local/etc/php/conf.d/99-opcache.ini
 
-COPY . /app
-
-COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN rm -rf /app/vendor
-RUN composer install
-RUN rm /usr/bin/composer
+COPY --from=build /app/ /app

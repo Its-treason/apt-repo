@@ -20,6 +20,7 @@
     "php": "^8.2",
     "ext-pdo": "*",
     "ext-zlib": "*",
+    "ext-zend-opcache": "*",
     "slim/slim": "^4.10",
     "php-di/php-di": "^6.4",
     "php-di/slim-bridge": "^3.2",
