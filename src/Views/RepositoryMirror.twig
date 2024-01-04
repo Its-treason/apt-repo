@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>GitHub Subscriptions</title>
+</head>
+<body>
+<main>
+    <h1>Foreign repository mirror</h1>
+    <div>This repository is a mirror combining various other repositories. Mirrors are updated every hour</div>
+    <ul>
+        {% for subscription in subscriptions %}
+            {% if loggedIn == true %}
+                <li style="display: block ruby">
+                    <a href="https://github.com/{{ subscription.owner }}/{{ subscription.name }}">
+                        {{ subscription.owner }}/{{ subscription.name }}
+                    </a>
+                    <form action="/ui/subscription/delete" method="post">
+                        <input name="owner" type="hidden" value="{{ subscription.owner }}" />
+                        <input name="name" type="hidden" value="{{ subscription.name }}" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {% else %}
+                <a href="https://github.com/{{ subscription.owner }}/{{ subscription.name }}">
+                    {{ subscription.owner }}/{{ subscription.name }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% if loggedIn == true %}
+        <hr />
+        <h2>Add subscription</h2>
+        <form action="/ui/subscription/create" method="post">
+            <label for="url-input">
+                GitHub repository URL
+            </label>
+            <input name="url" type="text" id="url-input" />
+            <button type="submit">Add</button>
+        </form>
+    {% endif %}
+</main>
+<hr/>
+<footer>
+    <a href="/ui">Back to repository info</a>
+</footer>
+</body>
+</html>

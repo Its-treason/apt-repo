@@ -26,6 +26,14 @@ services:
     volumes:
       - "./public:/app/public"
 
+  php:
+    build:
+      context: "."
+      dockerfile: "./Dockerfile"
+    restart: "no"
+    volumes:
+      - "./src:/var/www/html"
+
   mariadb:
     build:
       context: "."
